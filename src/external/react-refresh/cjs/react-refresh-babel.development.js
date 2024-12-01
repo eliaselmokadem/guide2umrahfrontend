@@ -8,8 +8,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-'use strict';
-
 if (process.env.NODE_ENV !== "production") {
   (function() {
 'use strict';
