@@ -1,9 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import foto5 from "../assets/fotorecht3.jpg";
-import safarcom from "../assets/safarcom.png";
-import umrah2go from "../assets/umrah2go.png";
-import jeddahflights from "../assets/jeddahflights.png";
 
 const Hero: React.FC = () => {
   return (
