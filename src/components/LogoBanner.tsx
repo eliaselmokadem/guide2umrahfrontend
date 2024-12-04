@@ -6,7 +6,7 @@ import flynaspng from "../assets/flynas-removebg-preview.png";
 
 const LogoBanner: React.FC = () => {
   return (
-    <div className="w-full bg-transparent py-4 md:py-8 overflow-hidden">
+    <div className="w-full bg-white py-4 md:py-8 overflow-hidden">
       <div className="flex animate-scroll whitespace-nowrap">
         {/* First set of logos */}
         <div className="flex min-w-max space-x-24 md:space-x-40 mx-12 md:mx-20">
