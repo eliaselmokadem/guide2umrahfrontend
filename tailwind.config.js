@@ -6,7 +6,7 @@ module.exports = {
       keyframes: {
         scroll: {
           '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-100%)' }
+          '100%': { transform: 'translateX(-180%)' }
         },
         'slide-in-left': {
           '0%': { transform: 'translateX(-100%)', opacity: '0' },
@@ -22,7 +22,7 @@ module.exports = {
         }
       },
       animation: {
-        'scroll': 'scroll 10s linear infinite',
+        'scroll': 'scroll 7s linear infinite',
         'slide-left': 'slide-in-left 1s ease-out forwards',
         'slide-right': 'slide-in-right 1s ease-out forwards',
         'slide-up': 'slide-up 1s ease-out forwards'
