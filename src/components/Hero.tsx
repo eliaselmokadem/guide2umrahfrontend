@@ -151,7 +151,7 @@ const Hero: React.FC = () => {
           </div>
 
           {/* Second invisible spacer container */}
-          <div className="h-[20vh]"></div>
+          <div className="h-[10vh]"></div>
 
         </div>
 
