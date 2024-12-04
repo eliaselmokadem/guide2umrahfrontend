@@ -19,7 +19,12 @@ const Login: React.FC = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Accept": "application/json",
+          "Access-Control-Allow-Origin": "https://guide2umrah.netlify.app",
+          "Access-Control-Allow-Methods": "POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type",
         },
+        credentials: "include",
         body: JSON.stringify({ email, password }),
       });
 
@@ -31,11 +36,11 @@ const Login: React.FC = () => {
         setError(null);
         window.location.href = "/dashboard";
       } else {
-        setError(data.message);
+        setError(data.message || "Login mislukt. Controleer uw gegevens.");
       }
     } catch (err) {
       console.error("Fout bij inloggen:", err);
-      setError("Er is iets mis gegaan. Probeer het opnieuw.");
+      setError("Er is iets mis gegaan. Controleer uw internetverbinding en probeer het opnieuw.");
     }
   };
 
