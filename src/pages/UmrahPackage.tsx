@@ -42,6 +42,7 @@ const UmrahPackage: React.FC = () => {
         setPackageData(data);
       } catch (err) {
         console.error('Error fetching package:', err);
+        setError('error fetching package');
       } finally {
         setLoading(false);
       }

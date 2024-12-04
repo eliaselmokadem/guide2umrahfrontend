@@ -7,6 +7,7 @@ import UmrahPackage from "./pages/UmrahPackage";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
+import WhatsAppButton from "./components/WhatsAppButton";
 
 //
 function App() {
@@ -27,6 +28,7 @@ function App() {
         <Route path="/aboutus" element={<AboutUs />}></Route>
         <Route path="/umrah/package/:packageId" element={<UmrahPackage />} />
       </Routes>
+      <WhatsAppButton />
     </Router>
   );
 }
