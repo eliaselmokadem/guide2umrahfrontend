@@ -53,6 +53,7 @@ const AboutUs: React.FC = () => {
 
       {/* Footer - sticky and at the bottom */}
       <Footer />
+      
     </div>
   );
 };
