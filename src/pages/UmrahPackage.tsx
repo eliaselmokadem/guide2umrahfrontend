@@ -1,79 +1,77 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import backgroundImage from "../assets/mekkahfullscreen.jpg";
-import foto1 from "../assets/fotorecht1.jpg";
-import foto2 from "../assets/fotorecht2.jpg";
-import foto3 from "../assets/fotorecht3.jpg";
-import foto4 from "../assets/fotorecht4.jpg";
-import foto5 from "../assets/fotorecht5.jpg";
-import foto6 from "../assets/fotorecht6.jpg";
 
 interface Package {
-  title: string;
+  _id: string;
+  name: string;
   date: string;
   duration: string;
-  price: string;
-  rating: number;
-  button: string;
-  images: string[];
+  price: number;
+  description: string;
+  photoPath: string;
 }
-
-const packageData: Package[] = [
-  {
-    title: "Ramadan / Krokusvakantie",
-    date: "27/02 - 08/03",
-    duration: "10 DAGEN",
-    price: "2299,-",
-    rating: 5,
-    button: "Meer Info",
-    images: [foto1, foto2],
-  },
-  {
-    title: "November Umrah",
-    date: "21/11 - 28/11",
-    duration: "7 DAGEN",
-    price: "1399,-",
-    rating: 5,
-    button: "Meer Info",
-    images: [foto3, foto4],
-  },
-  {
-    title: "December Umrah",
-    date: "03/12 - 12/12",
-    duration: "9 DAGEN",
-    price: "1499,-",
-    rating: 5,
-    button: "Meer Info",
-    images: [foto5, foto6],
-  },
-  {
-    title: "Wintervakantie",
-    date: "27/12 - 06/01",
-    duration: "11 DAGEN",
-    price: "2399,-",
-    rating: 5,
-    button: "Meer Info",
-    images: [foto1, foto2],
-  },
-];
 
 const UmrahPackage: React.FC = () => {
   const { packageId } = useParams<{ packageId: string }>();
+  const [packageData, setPackageData] = useState<Package | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Controleer of packageId geldig is en binnen de array-limieten valt
-  const pkg = packageId && packageData[parseInt(packageId)];
-  if (!pkg) {
+  useEffect(() => {
+    const fetchPackage = async () => {
+      try {
+        console.log('Fetching package with ID:', packageId);
+        const response = await fetch(`https://guide2umrah.onrender.com/api/packages/${packageId}`);
+        console.log('Response status:', response.status);
+        
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error('Error response:', errorText);
+          throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+        }
+        
+        const data = await response.json();
+        console.log('Fetched package data:', data);
+        
+        if (!data) {
+          throw new Error('No package data received');
+        }
+        
+        setPackageData(data);
+      } catch (err) {
+        console.error('Error fetching package:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPackage();
+  }, [packageId]);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-gray-100">
-        <p className="text-2xl text-red-600">
-          Ongeldig pakket-ID. Probeer opnieuw.
-        </p>
-        <Link to="/umrah" className="ml-4 text-green-500 hover:text-green-600">
-          Terug naar pakketten
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+        <h2 className="text-2xl font-bold text-red-600 mb-4">Error Occurred</h2>
+        <p className="text-lg text-gray-700 mb-4">{error}</p>
+        <p className="text-lg text-gray-700 mb-4">Package ID: {packageId}</p>
+        <Link 
+          to="/umrah" 
+          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
+        >
+          Back to Umrah Packages
         </Link>
       </div>
     );
+  }
+
+  if (!packageData) {
+    return <p>No package found.</p>;
   }
 
   return (
@@ -90,24 +88,23 @@ const UmrahPackage: React.FC = () => {
       <div className="container mx-auto px-4 py-10 flex flex-col items-center">
         <div className="bg-white p-10 rounded-lg shadow-2xl max-w-3xl w-full">
           <h1 className="text-5xl font-bold text-gray-800 mb-6 text-center">
-            {pkg.title}
+            {packageData.name}
           </h1>
           <div className="flex flex-col md:flex-row md:justify-between mb-6">
-            <p className="text-xl text-gray-600 mb-2 md:mb-0">{pkg.date}</p>
-            <p className="text-lg text-gray-500">{pkg.duration}</p>
+            <p className="text-xl text-gray-600 mb-2 md:mb-0">{packageData.date}</p>
+            <p className="text-lg text-gray-500">{packageData.duration}</p>
           </div>
           <p className="text-3xl font-bold text-green-600 mb-4">
-            Vanaf {pkg.price}
+            Vanaf €{packageData.price}
           </p>
+          <img src={packageData.photoPath} alt="" />
           <p className="text-lg text-gray-700 mb-8 leading-relaxed">
-            Dit pakket biedt alles wat je nodig hebt voor een perfecte
-            Umrah-reis naar Mekka en Medina. Geniet van een comfortabele reis,
-            uitstekende begeleiding, en een onvergetelijke spirituele ervaring.
+            {packageData.description}
           </p>
 
           <div className="flex justify-center mb-8">
             <a
-              href={`https://wa.me/+32465349779?text=Ik%20ben%20ge%C3%AFnteresseerd%20in%20het%20Umrah-pakket%20${pkg.title}%20en%20wil%20meer%20informatie%20ontvangen.`}
+              href={`https://wa.me/+32465349779?text=Ik%20ben%20ge%C3%AFnteresseerd%20in%20het%20Umrah-pakket%20${packageData.name}%20en%20wil%20meer%20informatie%20ontvangen.`}
               target="_blank"
               rel="noopener noreferrer"
             >

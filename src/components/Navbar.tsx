@@ -5,6 +5,7 @@ import logo from "../assets/logotransparent.png";
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,6 +16,10 @@ const Navbar: React.FC = () => {
         setScrolled(false);
       }
     };
+
+    // Check if user is logged in
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token);
 
     window.addEventListener('scroll', handleScroll);
     return () => {
@@ -79,11 +84,19 @@ const Navbar: React.FC = () => {
               </Link>
             </li>
             <li>
-              <Link to="/login">
-                <button className="ml-2 bg-green-500 px-4 lg:px-6 py-2 rounded-lg text-black font-bold hover:bg-green-600 active:bg-green-700 transition-all duration-200">
-                  Login
-                </button>
-              </Link>
+              {!isLoggedIn ? (
+                <Link to="/login">
+                  <button className="ml-2 bg-green-500 px-4 lg:px-6 py-2 rounded-lg text-black font-bold hover:bg-green-600 active:bg-green-700 transition-all duration-200">
+                    Login
+                  </button>
+                </Link>
+              ) : (
+                <Link to="/dashboard">
+                  <button className="ml-2 bg-green-500 px-4 lg:px-6 py-2 rounded-lg text-black font-bold hover:bg-green-600 active:bg-green-700 transition-all duration-200">
+                    Dashboard
+                  </button>
+                </Link>
+              )}
             </li>
           </ul>
         </div>
@@ -123,15 +136,27 @@ const Navbar: React.FC = () => {
               </Link>
             </li>
             <li className="px-3 pt-1">
-              <Link
-                to="/login"
-                className="block"
-                onClick={() => setIsOpen(false)}
-              >
-                <button className="w-full bg-green-500 px-4 py-2 rounded-lg text-black font-bold hover:bg-green-600 active:bg-green-700 transition-all duration-200">
-                  Login
-                </button>
-              </Link>
+              {!isLoggedIn ? (
+                <Link
+                  to="/login"
+                  className="block"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <button className="w-full bg-green-500 px-4 py-2 rounded-lg text-black font-bold hover:bg-green-600 active:bg-green-700 transition-all duration-200">
+                    Login
+                  </button>
+                </Link>
+              ) : (
+                <Link
+                  to="/dashboard"
+                  className="block"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <button className="w-full bg-green-500 px-4 py-2 rounded-lg text-black font-bold hover:bg-green-600 active:bg-green-700 transition-all duration-200">
+                    Dashboard
+                  </button>
+                </Link>
+              )}
             </li>
           </ul>
         </div>

@@ -26,6 +26,13 @@ const Dashboard: React.FC = () => {
 
   // Haal pakketten op uit de backend
   useEffect(() => {
+    // Check if user is logged in
+    const token = localStorage.getItem('token');
+    if (!token) {
+      window.location.href = '/login';
+      return;
+    }
+
     const fetchPackages = async () => {
       try {
         const response = await fetch(
@@ -49,19 +56,13 @@ const Dashboard: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setPackageData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setPackageData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setPackageData((prevData) => ({
-        ...prevData,
-        photo: file,
-      }));
+      setPackageData((prevData) => ({ ...prevData, photo: file }));
     }
   };
 
@@ -159,27 +160,43 @@ const Dashboard: React.FC = () => {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    window.location.href = '/';
+  };
+
   return (
     <div>
       <Navbar />
       <div className="flex items-start justify-center min-h-screen bg-gray-100">
         <div className="w-full max-w-7xl p-8 space-y-6 bg-white shadow-lg rounded-lg">
-          <h2 className="text-4xl font-bold text-center text-gray-800 mb-6">
+          <h2 className="text-4xl font-bold text-gray-800 mb-6">
             Welkom op het Dashboard
           </h2>
 
           {error && <p className="text-red-500 text-center">{error}</p>}
 
-          <div>
-            <h3 className="text-2xl font-bold text-gray-700 mb-4">
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-2xl font-bold text-gray-700">
               Beheer Pakketten
             </h3>
-            <button
-              onClick={() => setShowModal(true)}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-            >
-              Nieuw Pakket Toevoegen
-            </button>
+            <div className="space-x-4">
+              <button
+                onClick={() => setShowModal(true)}
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              >
+                Nieuw Pakket Toevoegen
+              </button>
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+              >
+                Uitloggen
+              </button>
+            </div>
+          </div>
+
+          <div>
             {loading ? (
               <p className="text-center mt-4">Laden...</p>
             ) : (
