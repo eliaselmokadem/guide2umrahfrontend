@@ -13,7 +13,10 @@ const Hero: React.FC = () => {
   const scrollTargetRef = useRef<HTMLDivElement>(null);
 
   const scrollToQuotes = () => {
-    scrollTargetRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (scrollTargetRef.current) {
+      const targetPosition = scrollTargetRef.current.getBoundingClientRect().top + window.scrollY - 50; // 50 pixels boven het vers
+      window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+    }
   };
 
   useEffect(() => {
