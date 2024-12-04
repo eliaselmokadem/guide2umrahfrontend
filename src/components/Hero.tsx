@@ -1,9 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import foto5 from "../assets/fotorecht3.jpg";
-import safarcom from "../assets/safarcom.png";
-import umrah2go from "../assets/umrah2go.png";
-import jeddahflights from "../assets/jeddahflights.png";
 
 const Hero: React.FC = () => {
   return (
@@ -42,30 +39,6 @@ const Hero: React.FC = () => {
           <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-center">
             Hier zijn onze betrouwbare partners:
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-1 gap-4 md:gap-6 items-center justify-items-center w-full max-w-md mx-auto">
-            <img 
-              src={safarcom} 
-              className="h-10 sm:h-12 md:h-16 w-auto object-contain hover:opacity-80 transition-opacity" 
-              alt="Safarcom" 
-            />
-            <img 
-              src={umrah2go} 
-              className="h-10 sm:h-12 md:h-16 w-auto object-contain hover:opacity-80 transition-opacity" 
-              alt="Umrah2Go" 
-            />
-            <a 
-              href="https://jeddahflights.com/" 
-              className="focus:outline-none col-span-2 md:col-span-1"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img 
-                src={jeddahflights} 
-                className="h-10 sm:h-12 md:h-16 w-auto object-contain hover:opacity-80 transition-opacity" 
-                alt="Jeddah Flights" 
-              />
-            </a>
-          </div>
         </div>
       </div>
     </div>
