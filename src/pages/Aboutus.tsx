@@ -11,10 +11,10 @@ const AboutUs: React.FC = () => {
 
       {/* Hero Sectie */}
       <div
-        className="bg-cover bg-center relative"
+        className="bg-cover bg-center relative mb-2"
         style={{
           backgroundImage: `url(${Banner})`,
-          height: "700px",
+          height: "400px",
           backgroundSize: "contain", // Veranderd naar contain
           backgroundPosition: "center", // Zorgt ervoor dat de afbeelding in het midden blijft
           backgroundRepeat: "no-repeat", // Herhaal de afbeelding niet
@@ -22,7 +22,7 @@ const AboutUs: React.FC = () => {
       ></div>
 
       {/* About Us Content */}
-      <div className="container mx-auto px-6 py-12 flex-grow">
+      <div className="container mx-auto px-4 py-2 flex-grow">
         <h2 className="text-3xl font-bold text-gray-800 mb-6">Wie zijn wij?</h2>
         <p className="text-gray-700 leading-relaxed">
           Bij Umrah België streven we ernaar om unieke en spirituele ervaringen
@@ -53,7 +53,6 @@ const AboutUs: React.FC = () => {
 
       {/* Footer - sticky and at the bottom */}
       <Footer />
-      
     </div>
   );
 };
