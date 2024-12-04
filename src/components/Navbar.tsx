@@ -79,10 +79,16 @@ const Navbar: React.FC = () => {
               </Link>
             </li>
             <li>
+              <Link to="/services" className="px-2 py-2 text-base lg:text-lg hover:text-green-500 transition-colors">
+                Services
+              </Link>
+            </li>
+            <li>
               <Link to="/aboutus" className="px-2 py-2 text-base lg:text-lg hover:text-green-500 transition-colors">
                 Over ons
               </Link>
             </li>
+            
             <li>
               {!isLoggedIn ? (
                 <Link to="/login">
