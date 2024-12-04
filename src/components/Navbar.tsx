@@ -23,8 +23,8 @@ const Navbar: React.FC = () => {
   }, []);
 
   return (
-    <nav className={`bg-white/95 backdrop-blur-sm text-black sticky top-0 z-50 transition-all duration-300 ${
-      scrolled ? 'shadow-md py-0' : 'py-1'
+    <nav className={`bg-gradient-to-b from-black/40 to-transparent backdrop-blur-[0px] text-black sticky top-0 z-50 transition-all duration-300 ${
+      scrolled ? 'from-black/60 backdrop-blur-[px] shadow-md py-0' : 'py-1'
     }`}>
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
         <div className="flex justify-between items-center h-14 sm:h-16">
@@ -94,11 +94,11 @@ const Navbar: React.FC = () => {
             isOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
           } md:hidden overflow-hidden transition-all duration-300 ease-in-out`}
         >
-          <ul className="flex flex-col space-y-2 pb-3">
+          <ul className="flex flex-col space-y-2 pb-3 bg-gradient-to-b from-black/40 to-transparent w-screen -mx-3 px-3">
             <li>
               <Link
                 to="/"
-                className="block px-3 py-2 text-base hover:text-green-500 transition-colors rounded-lg hover:bg-gray-50"
+                className="block px-3 py-2 text-base text-white hover:text-green-500 transition-colors rounded-lg hover:bg-white/10"
                 onClick={() => setIsOpen(false)}
               >
                 Home
@@ -107,7 +107,7 @@ const Navbar: React.FC = () => {
             <li>
               <Link
                 to="/umrah"
-                className="block px-3 py-2 text-base hover:text-green-500 transition-colors rounded-lg hover:bg-gray-50"
+                className="block px-3 py-2 text-base text-white hover:text-green-500 transition-colors rounded-lg hover:bg-white/10"
                 onClick={() => setIsOpen(false)}
               >
                 Umrah
@@ -116,7 +116,7 @@ const Navbar: React.FC = () => {
             <li>
               <Link
                 to="/aboutus"
-                className="block px-3 py-2 text-base hover:text-green-500 transition-colors rounded-lg hover:bg-gray-50"
+                className="block px-3 py-2 text-base text-white hover:text-green-500 transition-colors rounded-lg hover:bg-white/10"
                 onClick={() => setIsOpen(false)}
               >
                 Over ons

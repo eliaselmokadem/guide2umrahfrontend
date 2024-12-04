@@ -12,14 +12,14 @@ const Hero: React.FC = () => {
       <div
         className="absolute inset-0 z-[-1]"
         style={{
-          backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.4)), url(${foto5})`,
+          backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.2), rgba(0,0,0,0.4)), url(${foto5})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       ></div>
 
       {/* Content container */}
-      <div className="absolute w-full min-h-[50vh] sm:min-h-[40vh] bg-black/60 text-white flex flex-col md:flex-row items-start md:items-center justify-between px-4 sm:px-6 md:px-8 py-8 sm:py-10 md:py-16 border-t-4 border-lime-200 bottom-0 gap-6 md:gap-8">
+      <div className="absolute w-full min-h-[50vh] sm:min-h-[40vh] bg-gradient-to-t from-black/60 text-white flex flex-col md:flex-row items-start md:items-center justify-between px-4 sm:px-6 md:px-8 py-8 sm:py-10 md:py-16 bottom-0 gap-6 md:gap-8">
         {/* Text section */}
         <div className="w-full md:w-1/2 space-y-4 md:space-y-6">
           <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-wide leading-tight">
