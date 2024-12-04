@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import foto5 from "../assets/fotorecht5.jpg";
+import foto5 from "../assets/fotorecht2.jpg";
 import safarcom from "../assets/safarcom.png";
 import umrah2go from "../assets/umrah2go.png";
 import jeddahflights from "../assets/jeddahflights.png";

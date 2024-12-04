@@ -9,35 +9,42 @@ const Login: React.FC = () => {
     e.preventDefault();
 
     const email = (document.getElementById("email") as HTMLInputElement).value;
-    const password = (document.getElementById("password") as HTMLInputElement)
-      .value;
+    const password = (document.getElementById("password") as HTMLInputElement).value;
 
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = process.env.REACT_APP_API_URL || "https://guide2umrah.onrender.com";
 
     try {
       const response = await fetch(`${apiUrl}/api/login`, {
         method: "POST",
+        mode: "cors",
         headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
+          "Content-Type": "application/json"
         },
-        credentials: "include",
         body: JSON.stringify({ email, password }),
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
       const data = await response.json();
 
       if (response.ok) {
-        console.log("Ingelogd:", data.token);
-        localStorage.setItem("token", data.token);
-        setError(null);
-        window.location.href = "/dashboard";
-      } else {
-        setError(data.message || "Login mislukt. Controleer uw gegevens.");
+        console.log("Login successful:", data);
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+          window.location.href = "/dashboard";
+        } else {
+          setError("No token received from server");
+        }
       }
     } catch (err) {
-      console.error("Fout bij inloggen:", err);
-      setError("Er is iets mis gegaan. Controleer uw internetverbinding en probeer het opnieuw.");
+      console.error("Login error:", err);
+      if (err instanceof Error) {
+        setError(`Login failed: ${err.message}`);
+      } else {
+        setError("An unexpected error occurred during login");
+      }
     }
   };
 
