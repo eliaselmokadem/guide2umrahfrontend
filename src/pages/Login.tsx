@@ -19,10 +19,7 @@ const Login: React.FC = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Accept": "application/json",
-          "Access-Control-Allow-Origin": "https://guide2umrah.netlify.app",
-          "Access-Control-Allow-Methods": "POST, OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type",
+          "Accept": "application/json"
         },
         credentials: "include",
         body: JSON.stringify({ email, password }),
