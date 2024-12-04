@@ -86,7 +86,7 @@ const Umrah: React.FC = () => {
           ) : error ? (
             <p className="text-red-500">{error}</p>
           ) : packages.length > 0 ? (
-            <div className="bg-white p-6 rounded-lg shadow-lg space-y-8 mt-12 md:mt-16 lg:mt-24">
+            <div className="bg-transparent p-6 rounded-lg shadow-lg space-y-8 mt-12 md:mt-16 lg:mt-24">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                 {packages.map((pkg) => (
                   <div
