@@ -132,6 +132,16 @@ const Navbar: React.FC = () => {
                 Umrah
               </Link>
             </li>
+
+            <li>
+              <Link
+                to="/services"
+                className="block px-3 py-2 text-base text-white hover:text-green-500 transition-colors rounded-lg hover:bg-white/10"
+                onClick={() => setIsOpen(false)}
+              >
+                Services
+              </Link>
+            </li>
             <li>
               <Link
                 to="/aboutus"
