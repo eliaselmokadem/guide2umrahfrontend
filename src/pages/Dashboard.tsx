@@ -7,7 +7,7 @@ interface Package {
   date: string;
   description: string;
   price: number;
-  photoPath: string;
+  photoPaths: string[];
 }
 
 interface Service {
@@ -15,7 +15,7 @@ interface Service {
   name: string;
   description: string;
   price: number;
-  photoPath: string;
+  photoPaths: string[];
 }
 
 const Dashboard: React.FC = () => {
@@ -26,13 +26,13 @@ const Dashboard: React.FC = () => {
     date: "",
     description: "",
     price: "",
-    photo: null as File | null,
+    photos: [] as File[],
   });
   const [serviceData, setServiceData] = useState({
     name: "",
     description: "",
     price: "",
-    photo: null as File | null,
+    photos: [] as File[],
   });
   const [packages, setPackages] = useState<Package[]>([]);
   const [services, setServices] = useState<Service[]>([]);
@@ -90,17 +90,27 @@ const Dashboard: React.FC = () => {
   };
 
   const handlePackageFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setPackageData((prevData) => ({ ...prevData, photo: file }));
-    }
+    const files = Array.from(e.target.files || []);
+    setPackageData((prevData) => ({ ...prevData, photos: [...prevData.photos, ...files] }));
   };
 
   const handleServiceFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setServiceData((prevData) => ({ ...prevData, photo: file }));
-    }
+    const files = Array.from(e.target.files || []);
+    setServiceData((prevData) => ({ ...prevData, photos: [...prevData.photos, ...files] }));
+  };
+
+  const handleRemovePackagePhoto = (index: number) => {
+    setPackageData((prevData) => ({
+      ...prevData,
+      photos: prevData.photos.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleRemoveServicePhoto = (index: number) => {
+    setServiceData((prevData) => ({
+      ...prevData,
+      photos: prevData.photos.filter((_, i) => i !== index),
+    }));
   };
 
   const handlePackageSubmit = async (e: React.FormEvent) => {
@@ -112,9 +122,9 @@ const Dashboard: React.FC = () => {
     formData.append("date", packageData.date);
     formData.append("description", packageData.description);
     formData.append("price", packageData.price);
-    if (packageData.photo) {
-      formData.append("photo", packageData.photo);
-    }
+    packageData.photos.forEach((photo, index) => {
+      formData.append(`photos`, photo);
+    });
 
     try {
       const response = editPackageId
@@ -146,7 +156,7 @@ const Dashboard: React.FC = () => {
         date: "",
         description: "",
         price: "",
-        photo: null,
+        photos: [],
       });
       setEditPackageId(null);
 
@@ -170,9 +180,9 @@ const Dashboard: React.FC = () => {
     formData.append("name", serviceData.name);
     formData.append("description", serviceData.description);
     formData.append("price", serviceData.price);
-    if (serviceData.photo) {
-      formData.append("photo", serviceData.photo);
-    }
+    serviceData.photos.forEach((photo, index) => {
+      formData.append(`photos`, photo);
+    });
 
     try {
       const response = editServiceId
@@ -203,7 +213,7 @@ const Dashboard: React.FC = () => {
         name: "",
         description: "",
         price: "",
-        photo: null,
+        photos: [],
       });
       setEditServiceId(null);
 
@@ -226,7 +236,7 @@ const Dashboard: React.FC = () => {
       date: pkg.date,
       description: pkg.description,
       price: pkg.price.toString(),
-      photo: null,
+      photos: [],
     });
     setShowPackageModal(true);
   };
@@ -237,7 +247,7 @@ const Dashboard: React.FC = () => {
       name: service.name,
       description: service.description,
       price: service.price.toString(),
-      photo: null,
+      photos: [],
     });
     setShowServiceModal(true);
   };
@@ -335,11 +345,16 @@ const Dashboard: React.FC = () => {
                       key={pkg._id}
                       className="p-4 bg-gray-100 rounded-lg shadow-lg"
                     >
-                      <img
-                        src={pkg.photoPath}
-                        alt={pkg.name}
-                        className="w-full h-40 object-cover rounded"
-                      />
+                      <div className="grid grid-cols-2 gap-2">
+                        {pkg.photoPaths.map((path, index) => (
+                          <img
+                            key={index}
+                            src={path}
+                            alt={`${pkg.name} ${index + 1}`}
+                            className="w-full h-40 object-cover rounded"
+                          />
+                        ))}
+                      </div>
                       <h4 className="text-xl font-bold mt-4">{pkg.name}</h4>
                       <p className="text-gray-500">{pkg.description}</p>
                       <p className="text-gray-700 mt-2">Prijs: €{pkg.price}</p>
@@ -392,11 +407,16 @@ const Dashboard: React.FC = () => {
                       key={service._id}
                       className="p-4 bg-gray-100 rounded-lg shadow-lg"
                     >
-                      <img
-                        src={service.photoPath}
-                        alt={service.name}
-                        className="w-full h-40 object-cover rounded"
-                      />
+                      <div className="grid grid-cols-2 gap-2">
+                        {service.photoPaths.map((path, index) => (
+                          <img
+                            key={index}
+                            src={path}
+                            alt={`${service.name} ${index + 1}`}
+                            className="w-full h-40 object-cover rounded"
+                          />
+                        ))}
+                      </div>
                       <h4 className="text-xl font-bold mt-4">{service.name}</h4>
                       <p className="text-gray-500">{service.description}</p>
                       <p className="text-gray-700 mt-2">Prijs: €{service.price}</p>
@@ -502,7 +522,7 @@ const Dashboard: React.FC = () => {
                       htmlFor="photo"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Foto Uploaden
+                      Foto's Uploaden
                     </label>
                     <input
                       id="photo"
@@ -510,8 +530,31 @@ const Dashboard: React.FC = () => {
                       type="file"
                       accept="image/*"
                       onChange={handlePackageFileChange}
+                      multiple
                       className="w-full px-4 py-2 mt-1"
                     />
+                    {packageData.photos.length > 0 && (
+                      <div className="mt-2 grid grid-cols-2 gap-2">
+                        {packageData.photos.map((photo, index) => (
+                          <div key={index} className="relative">
+                            <img
+                              src={URL.createObjectURL(photo)}
+                              alt={`Preview ${index + 1}`}
+                              className="w-full h-32 object-cover rounded"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => handleRemovePackagePhoto(index)}
+                              className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                              </svg>
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                   <div className="flex justify-end space-x-4">
                     <button
@@ -600,7 +643,7 @@ const Dashboard: React.FC = () => {
                       htmlFor="servicePhoto"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Foto Uploaden
+                      Foto's Uploaden
                     </label>
                     <input
                       id="servicePhoto"
@@ -608,8 +651,31 @@ const Dashboard: React.FC = () => {
                       type="file"
                       accept="image/*"
                       onChange={handleServiceFileChange}
+                      multiple
                       className="w-full px-4 py-2 mt-1"
                     />
+                    {serviceData.photos.length > 0 && (
+                      <div className="mt-2 grid grid-cols-2 gap-2">
+                        {serviceData.photos.map((photo, index) => (
+                          <div key={index} className="relative">
+                            <img
+                              src={URL.createObjectURL(photo)}
+                              alt={`Preview ${index + 1}`}
+                              className="w-full h-32 object-cover rounded"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveServicePhoto(index)}
+                              className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                              </svg>
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                   <div className="flex justify-end space-x-4">
                     <button

@@ -2,13 +2,18 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 import backgroundImage from "../assets/mekkahfullscreen.jpg";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 interface Service {
   _id: string;
   name: string;
   description: string;
   price: number;
-  photoPath: string;
+  photoPaths: string[];
 }
 
 const Services: React.FC = () => {
@@ -71,37 +76,46 @@ const Services: React.FC = () => {
             <p className="text-red-500">{error}</p>
           ) : services.length > 0 ? (
             <div className="bg-transparent p-6 rounded-lg shadow-lg space-y-8 mt-12 md:mt-16 lg:mt-24">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {services.map((service) => (
                   <div
                     key={service._id}
-                    className="bg-white rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:scale-105"
+                    className="bg-gray-100 p-4 rounded-lg shadow-md"
                   >
-                    <img
-                      src={service.photoPath}
-                      alt={service.name}
-                      className="w-full h-48 object-cover"
-                    />
-                    <div className="p-4">
-                      <h3 className="text-xl font-bold text-gray-800 mb-2">
-                        {service.name}
-                      </h3>
-                      <p className="text-gray-600 mb-4">{service.description}</p>
-                      <p className="text-xl font-bold text-green-600 mt-4">
-                        Vanaf €{service.price}
-                      </p>
-                      <Link to={`/services/${service._id}`}>
-                        <button className="mt-4 w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
-                          Meer Info
-                        </button>
-                      </Link>
+                    <div className="h-48 mb-4">
+                      <Swiper
+                        modules={[Navigation, Pagination]}
+                        navigation
+                        pagination={{ clickable: true }}
+                        className="h-full rounded-lg"
+                      >
+                        {service.photoPaths.map((path, index) => (
+                          <SwiperSlide key={index}>
+                            <img
+                              src={path}
+                              alt={`${service.name} ${index + 1}`}
+                              className="w-full h-full object-cover"
+                            />
+                          </SwiperSlide>
+                        ))}
+                      </Swiper>
                     </div>
+                    <h4 className="text-xl font-bold">{service.name}</h4>
+                    <p className="text-sm text-gray-500">{service.description}</p>
+                    <p className="text-xl font-bold text-green-600 mt-4">
+                      Vanaf €{service.price}
+                    </p>
+                    <Link to={`/services/${service._id}`}>
+                      <button className="mt-6 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
+                        Meer Info
+                      </button>
+                    </Link>
                   </div>
                 ))}
               </div>
             </div>
           ) : (
-            <p className="text-center text-white">Geen services beschikbaar.</p>
+            <p className="text-white">Geen services beschikbaar.</p>
           )}
         </div>
       </div>

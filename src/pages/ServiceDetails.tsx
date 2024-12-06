@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 interface Service {
   _id: string;
   name: string;
   description: string;
   price: number;
-  photoPath: string;
+  photoPaths: string[];
 }
 
 const ServiceDetails: React.FC = () => {
@@ -44,8 +49,8 @@ const ServiceDetails: React.FC = () => {
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
         <h2 className="text-2xl font-bold text-red-600 mb-4">Error Occurred</h2>
         <p className="text-lg text-gray-700 mb-4">{error}</p>
-        <Link 
-          to="/services" 
+        <Link
+          to="/services"
           className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
         >
           Back to Services
@@ -74,11 +79,26 @@ const ServiceDetails: React.FC = () => {
           <h1 className="text-5xl font-bold text-gray-800 mb-6 text-center">
             {serviceData.name}
           </h1>
-          <img
-            src={serviceData.photoPath}
-            alt={serviceData.name}
-            className="w-full h-64 object-cover rounded mb-6"
-          />
+          
+          <div className="h-96 mb-6">
+            <Swiper
+              modules={[Navigation, Pagination]}
+              navigation
+              pagination={{ clickable: true }}
+              className="h-full rounded-lg"
+            >
+              {serviceData.photoPaths.map((path, index) => (
+                <SwiperSlide key={index}>
+                  <img
+                    src={path}
+                    alt={`${serviceData.name} ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+
           <p className="text-3xl font-bold text-green-600 mb-4">
             Vanaf €{serviceData.price}
           </p>
