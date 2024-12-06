@@ -22,7 +22,7 @@ module.exports = {
         }
       },
       animation: {
-        'scroll': 'scroll 7s linear infinite',
+        'scroll': 'scroll 15s linear infinite',
         'slide-left': 'slide-in-left 1s ease-out forwards',
         'slide-right': 'slide-in-right 1s ease-out forwards',
         'slide-up': 'slide-up 1s ease-out forwards'

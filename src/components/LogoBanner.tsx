@@ -9,7 +9,7 @@ const LogoBanner: React.FC = () => {
     <div className="w-full bg-white py-4 md:py-8 overflow-hidden">
       <div className="flex animate-scroll whitespace-nowrap">
         {/* First set of logos */}
-        <div className="flex min-w-max space-x-12 md:space-x-20 mx-12 md:mx-20">
+        <div className="flex min-w-max space-x-12 md:space-x-66 mx-12 md:mx-30">
           <div className="w-28 md:w-48 flex-shrink-0">
             <img src={umrah2gopng} alt="Umrah2Go" className="h-20 md:h-24 object-contain" />
           </div>
@@ -20,7 +20,7 @@ const LogoBanner: React.FC = () => {
             <img src={jeddahflightspng} alt="Jeddah Flights" className="h-20 md:h-24 object-contain" />
           </div>
           <div className="w-28 md:w-48 flex-shrink-0">
-            <img src={flynaspng} alt="Flynas" className="h-20 md:h-24 object-contain"  />
+            <img src={flynaspng} alt="Flynas" className="h-20 md:h-24 object-contain" />
           </div>
           <div className="w-28 md:w-48 flex-shrink-0">
             <img src={umrah2gopng} alt="Umrah2Go" className="h-20 md:h-24 object-contain" />
@@ -32,13 +32,12 @@ const LogoBanner: React.FC = () => {
             <img src={jeddahflightspng} alt="Jeddah Flights" className="h-20 md:h-24 object-contain" />
           </div>
           <div className="w-28 md:w-48 flex-shrink-0">
-            <img src={flynaspng} alt="Flynas" className="h-20 md:h-24 object-contain"  />
+            <img src={flynaspng} alt="Flynas" className="h-20 md:h-24 object-contain" />
           </div>
         </div>
-          
-       
+
         {/* Duplicate set for seamless loop */}
-        <div className="flex min-w-max space-x-12 md:space-x-20 mx-12 md:mx-20">
+        <div className="flex min-w-max space-x-12 md:space-x-66 mx-12 md:mx-30">
           <div className="w-28 md:w-48 flex-shrink-0">
             <img src={umrah2gopng} alt="Umrah2Go" className="h-20 md:h-24 object-contain" />
           </div>
@@ -49,7 +48,7 @@ const LogoBanner: React.FC = () => {
             <img src={jeddahflightspng} alt="Jeddah Flights" className="h-20 md:h-24 object-contain" />
           </div>
           <div className="w-28 md:w-48 flex-shrink-0">
-            <img src={flynaspng}  className="h-20 md:h-24 object-contain" alt="Flynas" />
+            <img src={flynaspng} alt="Flynas" className="h-20 md:h-24 object-contain" />
           </div>
           <div className="w-28 md:w-48 flex-shrink-0">
             <img src={umrah2gopng} alt="Umrah2Go" className="h-20 md:h-24 object-contain" />
@@ -61,7 +60,7 @@ const LogoBanner: React.FC = () => {
             <img src={jeddahflightspng} alt="Jeddah Flights" className="h-20 md:h-24 object-contain" />
           </div>
           <div className="w-28 md:w-48 flex-shrink-0">
-            <img src={flynaspng}  className="h-20 md:h-24 object-contain" alt="Flynas" />
+            <img src={flynaspng} alt="Flynas" className="h-20 md:h-24 object-contain" />
           </div>
         </div>
       </div>
