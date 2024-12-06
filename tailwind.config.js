@@ -6,7 +6,7 @@ module.exports = {
       keyframes: {
         scroll: {
           '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-180%)' }
+          '100%': { transform: 'translateX(-150%)' }
         },
         'slide-in-left': {
           '0%': { transform: 'translateX(-100%)', opacity: '0' },
