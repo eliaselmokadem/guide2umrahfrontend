@@ -1,3 +1,39 @@
+# Guide2Umrah robots.txt
 # https://www.robotstxt.org/robotstxt.html
+
+# Allow all robots full access
 User-agent: *
-Disallow:
+Allow: /
+
+# Allow all major search engines
+User-agent: Googlebot
+Allow: /
+User-agent: Bingbot
+Allow: /
+User-agent: Slurp
+Allow: /
+
+# Sitemap location (add when sitemap is created)
+Sitemap: https://guide2umrah.com/sitemap.xml
+
+# Prevent crawling of admin areas
+Disallow: /dashboard
+Disallow: /login
+Disallow: /admin/
+Disallow: /api/
+
+# Allow crawling of static assets
+Allow: /*.js
+Allow: /*.css
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.gif
+Allow: /*.svg
+Allow: /*.ico
+
+# Crawl-delay for heavy bots
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10

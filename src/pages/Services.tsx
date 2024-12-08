@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
+import SEO from "../components/SEO";
 import { Link } from "react-router-dom";
 import backgroundImage from "../assets/mekkahfullscreen.jpg";
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -41,85 +42,91 @@ const Services: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      <Navbar />
+    <>
+      <SEO 
+        title="Guide2Umrah - Onze Diensten"
+        description="Ontdek onze uitgebreide diensten voor uw Umrah-reis. Van visa-aanvragen tot private accommodatie en vervoer, wij regelen alles voor u."
+      />
+      <div>
+        <Navbar />
 
-      <div
-        style={{
-          backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          minHeight: "100vh",
-          position: "relative",
-        }}
-      >
         <div
           style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "rgba(0, 0, 0, 0.4)",
-            zIndex: 0,
+            backgroundImage: `url(${backgroundImage})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            minHeight: "100vh",
+            position: "relative",
           }}
-        ></div>
+        >
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: "rgba(0, 0, 0, 0.4)",
+              zIndex: 0,
+            }}
+          ></div>
 
-        <div className="container mx-auto px-4 py-10 relative z-10 flex flex-col justify-center items-center min-h-screen">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 text-white">
-            Onze Services
-          </h1>
+          <div className="container mx-auto px-4 py-10 relative z-10 flex flex-col justify-center items-center min-h-screen">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 text-white">
+              Onze Services
+            </h1>
 
-          {loading ? (
-            <p className="text-white">Laden...</p>
-          ) : error ? (
-            <p className="text-red-500">{error}</p>
-          ) : services.length > 0 ? (
-            <div className="bg-transparent p-6 rounded-lg shadow-lg space-y-8 mt-12 md:mt-16 lg:mt-24">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {services.map((service) => (
-                  <div
-                    key={service._id}
-                    className="bg-gray-100 p-4 rounded-lg shadow-md"
-                  >
-                    <div className="h-48 mb-4">
-                      <Swiper
-                        modules={[Navigation, Pagination]}
-                        navigation
-                        pagination={{ clickable: true }}
-                        className="h-full rounded-lg"
-                      >
-                        {service.photoPaths.map((path, index) => (
-                          <SwiperSlide key={index}>
-                            <img
-                              src={path}
-                              alt={`${service.name} ${index + 1}`}
-                              className="w-full h-full object-cover"
-                            />
-                          </SwiperSlide>
-                        ))}
-                      </Swiper>
+            {loading ? (
+              <p className="text-white">Laden...</p>
+            ) : error ? (
+              <p className="text-red-500">{error}</p>
+            ) : services.length > 0 ? (
+              <div className="bg-transparent p-6 rounded-lg shadow-lg space-y-8 mt-12 md:mt-16 lg:mt-24">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {services.map((service) => (
+                    <div
+                      key={service._id}
+                      className="bg-gray-100 p-4 rounded-lg shadow-md"
+                    >
+                      <div className="h-48 mb-4">
+                        <Swiper
+                          modules={[Navigation, Pagination]}
+                          navigation
+                          pagination={{ clickable: true }}
+                          className="h-full rounded-lg"
+                        >
+                          {service.photoPaths.map((path, index) => (
+                            <SwiperSlide key={index}>
+                              <img
+                                src={path}
+                                alt={`${service.name} ${index + 1}`}
+                                className="w-full h-full object-cover"
+                              />
+                            </SwiperSlide>
+                          ))}
+                        </Swiper>
+                      </div>
+                      <h4 className="text-xl font-bold">{service.name}</h4>
+                      <p className="text-sm text-gray-500">{service.description}</p>
+                      <p className="text-xl font-bold text-green-600 mt-4">
+                        Vanaf €{service.price}
+                      </p>
+                      <Link to={`/services/${service._id}`}>
+                        <button className="mt-6 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
+                          Meer Info
+                        </button>
+                      </Link>
                     </div>
-                    <h4 className="text-xl font-bold">{service.name}</h4>
-                    <p className="text-sm text-gray-500">{service.description}</p>
-                    <p className="text-xl font-bold text-green-600 mt-4">
-                      Vanaf €{service.price}
-                    </p>
-                    <Link to={`/services/${service._id}`}>
-                      <button className="mt-6 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
-                        Meer Info
-                      </button>
-                    </Link>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          ) : (
-            <p className="text-white">Geen services beschikbaar.</p>
-          )}
+            ) : (
+              <p className="text-white">Geen services beschikbaar.</p>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

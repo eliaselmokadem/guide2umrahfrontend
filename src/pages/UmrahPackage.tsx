@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import SEO from "../components/SEO";
 import backgroundImage from "../assets/mekkahfullscreen.jpg";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
@@ -68,103 +69,109 @@ const UmrahPackage: React.FC = () => {
   }
 
   return (
-    <div
-      style={{
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        minHeight: "100vh",
-        position: "relative",
-      }}
-    >
+    <>
+      <SEO 
+        title={`Guide2Umrah - ${packageData.name || 'Umrah Pakket'}`}
+        description={packageData.description || 'Bekijk de details van ons Umrah pakket met accommodatie, vervoer en begeleiding inbegrepen.'}
+      />
       <div
         style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: "rgba(0, 0, 0, 0.6)",
-          zIndex: 0,
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          minHeight: "100vh",
+          position: "relative",
         }}
-      ></div>
+      >
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.6)",
+            zIndex: 0,
+          }}
+        ></div>
 
-      <Navbar />
+        <Navbar />
 
-      <div className="container mx-auto px-4 py-10 relative z-10">
-        <div className="bg-white p-8 rounded-lg shadow-2xl max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold text-gray-800 mb-6 text-center">
-            {packageData.name}
-          </h1>
+        <div className="container mx-auto px-4 py-10 relative z-10">
+          <div className="bg-white p-8 rounded-lg shadow-2xl max-w-4xl mx-auto">
+            <h1 className="text-4xl font-bold text-gray-800 mb-6 text-center">
+              {packageData.name}
+            </h1>
 
-          <div className="h-96 mb-8">
-            <Swiper
-              modules={[Navigation, Pagination]}
-              navigation
-              pagination={{ clickable: true }}
-              className="h-full rounded-lg"
-            >
-              {packageData.photoPaths.map((path, index) => (
-                <SwiperSlide key={index}>
-                  <img
-                    src={path}
-                    alt={`${packageData.name} ${index + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-                Datum
-              </h2>
-              <p className="text-gray-600">{packageData.date}</p>
-            </div>
-
-            <div>
-              <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-                Beschrijving
-              </h2>
-              <p className="text-gray-600 leading-relaxed">
-                {packageData.description}
-              </p>
-            </div>
-
-            <div>
-              <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-                Prijs
-              </h2>
-              <p className="text-3xl font-bold text-green-600">
-                Vanaf €{packageData.price}
-              </p>
-            </div>
-
-            <div className="flex flex-col items-center space-y-4 mt-8">
-              <a
-                href={`https://wa.me/+32465349779?text=Ik%20ben%20ge%C3%AFnteresseerd%20in%20het%20Umrah%20pakket%20${packageData.name}%20en%20wil%20meer%20informatie%20ontvangen.`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full max-w-md"
+            <div className="h-96 mb-8">
+              <Swiper
+                modules={[Navigation, Pagination]}
+                navigation
+                pagination={{ clickable: true }}
+                className="h-full rounded-lg"
               >
-                <button className="w-full bg-green-500 text-white px-8 py-4 rounded-full hover:bg-green-600 transition-all duration-300 shadow-lg transform hover:scale-105">
-                  Contact via WhatsApp
-                </button>
-              </a>
+                {packageData.photoPaths.map((path, index) => (
+                  <SwiperSlide key={index}>
+                    <img
+                      src={path}
+                      alt={`${packageData.name} ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
 
-              <Link
-                to="/umrah"
-                className="text-green-500 hover:text-green-600 text-lg font-semibold"
-              >
-                Terug naar pakketten
-              </Link>
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+                  Datum
+                </h2>
+                <p className="text-gray-600">{packageData.date}</p>
+              </div>
+
+              <div>
+                <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+                  Beschrijving
+                </h2>
+                <p className="text-gray-600 leading-relaxed">
+                  {packageData.description}
+                </p>
+              </div>
+
+              <div>
+                <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+                  Prijs
+                </h2>
+                <p className="text-3xl font-bold text-green-600">
+                  Vanaf €{packageData.price}
+                </p>
+              </div>
+
+              <div className="flex flex-col items-center space-y-4 mt-8">
+                <a
+                  href={`https://wa.me/+32465349779?text=Ik%20ben%20ge%C3%AFnteresseerd%20in%20het%20Umrah%20pakket%20${packageData.name}%20en%20wil%20meer%20informatie%20ontvangen.`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full max-w-md"
+                >
+                  <button className="w-full bg-green-500 text-white px-8 py-4 rounded-full hover:bg-green-600 transition-all duration-300 shadow-lg transform hover:scale-105">
+                    Contact via WhatsApp
+                  </button>
+                </a>
+
+                <Link
+                  to="/umrah"
+                  className="text-green-500 hover:text-green-600 text-lg font-semibold"
+                >
+                  Terug naar pakketten
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
