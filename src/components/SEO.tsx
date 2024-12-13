@@ -3,7 +3,7 @@ import logo from '../assets/logotransparent.png';
 
 interface SEOProps {
   title: string;
-  description: string;
+  description?: string;
   name?: string;
   type?: string;
   image?: string;
