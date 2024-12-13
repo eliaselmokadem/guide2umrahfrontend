@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import logo from '../assets/logotransparent.png';
 
 interface SEOProps {
   title: string;
@@ -11,11 +12,11 @@ interface SEOProps {
 
 const SEO = ({ 
   title, 
-  description, 
+  description = 'Uw partner voor een spirituele en onvergetelijke reis naar Mekka en Medina. Boek nu uw exclusieve Umrah-pakket en ervaar comfort en kwaliteit.', 
   name = 'Guide2Umrah',
   type = 'website',
-  image = '/og-image.jpg',
-  url = 'https://guide2umrah.com'
+  image = logo,
+  url = 'https://www.guide2umrah.com'
 }: SEOProps) => {
   return (
     <Helmet>
