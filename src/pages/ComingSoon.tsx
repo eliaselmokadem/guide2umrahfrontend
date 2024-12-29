@@ -109,15 +109,7 @@ const ComingSoon: React.FC = () => {
                 </form>
               </div>
               
-              {/* Back to home link */}
-              <div className="mt-12">
-                <Link
-                  to="/"
-                  className="text-emerald-500 hover:text-emerald-600 transition-colors"
-                >
-                  ← Back to Home
-                </Link>
-              </div>
+              
             </div>
           </div>
         </main>

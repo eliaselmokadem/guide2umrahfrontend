@@ -33,7 +33,7 @@ const Navbar: React.FC = () => {
     }`}>
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
         <div className="flex justify-between items-center h-14 sm:h-16">
-          <Link to="/" className="flex-shrink-0">
+          <Link to="/coming-soon" className="flex-shrink-0">
             <img 
               src={logo} 
               className={`h-[40px] sm:h-[50px] md:h-[60px] transition-all duration-300 ${
@@ -69,7 +69,7 @@ const Navbar: React.FC = () => {
           {/* Desktop menu */}
           <ul className="hidden md:flex items-center space-x-2 lg:space-x-4">
             <li>
-              <Link to="/" className="px-2 py-2 text-base lg:text-lg hover:text-green-500 transition-colors">
+              <Link to="/coming-soon" className="px-2 py-2 text-base lg:text-lg hover:text-green-500 transition-colors">
                 Home
               </Link>
             </li>
