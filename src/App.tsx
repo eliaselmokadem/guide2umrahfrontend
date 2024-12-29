@@ -11,6 +11,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import WhatsAppButton from "./components/WhatsAppButton";
 import Services from "./pages/Services";
 import ServiceDetails from "./pages/ServiceDetails";
+import ComingSoon from "./pages/ComingSoon";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route path="/umrah/package/:packageId" element={<UmrahPackage />} />
           <Route path="/services" element={<Services />} />
           <Route path="/services/:serviceId" element={<ServiceDetails />} />
+          <Route path="/coming-soon" element={<ComingSoon />} />
         </Routes>
         <WhatsAppButton />
       </Router>
