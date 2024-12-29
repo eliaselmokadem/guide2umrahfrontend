@@ -1,25 +1,26 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
-import Home from "./pages/Home";
-import Umrah from "./pages/Umrah";
-import AboutUs from "./pages/Aboutus";
-import UmrahPackage from "./pages/UmrahPackage";
+import ComingSoon from "./pages/ComingSoon";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import WhatsAppButton from "./components/WhatsAppButton";
-import Services from "./pages/Services";
-import ServiceDetails from "./pages/ServiceDetails";
-import ComingSoon from "./pages/ComingSoon";
+
+// Temporarily unused imports
+// import Home from "./pages/Home";
+// import Umrah from "./pages/Umrah";
+// import AboutUs from "./pages/Aboutus";
+// import UmrahPackage from "./pages/UmrahPackage";
+// import Services from "./pages/Services";
+// import ServiceDetails from "./pages/ServiceDetails";
 
 function App() {
   return (
     <HelmetProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/umrah" element={<Umrah />} />
+          {/* Essential routes that should remain accessible */}
           <Route path="/login" element={<Login />} />
           <Route
             path="/dashboard"
@@ -29,11 +30,12 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/aboutus" element={<AboutUs />}></Route>
-          <Route path="/umrah/package/:packageId" element={<UmrahPackage />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/services/:serviceId" element={<ServiceDetails />} />
+          
+          {/* Coming soon page */}
           <Route path="/coming-soon" element={<ComingSoon />} />
+          
+          {/* Redirect all other routes to coming-soon */}
+          <Route path="*" element={<Navigate to="/coming-soon" replace />} />
         </Routes>
         <WhatsAppButton />
       </Router>
