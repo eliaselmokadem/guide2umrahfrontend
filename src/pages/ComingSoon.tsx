@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-//import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
@@ -27,16 +26,27 @@ const ComingSoon: React.FC = () => {
     setMessage('');
 
     try {
-      // Here you would typically make an API call to your backend
-      // For now, we'll simulate the API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/subscribe`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Er is iets misgegaan.');
+      }
+
       // Clear the form and show success message
       setEmail('');
-      setMessage('Bedankt! We houden je op de hoogte.');
+      setMessage(data.message || 'Bedankt! We houden je op de hoogte.');
       
     } catch (error) {
-      setMessage('Er is iets misgegaan. Probeer het later opnieuw.');
+      console.error('Subscription error:', error);
+      setMessage(error instanceof Error ? error.message : 'Er is iets misgegaan. Probeer het later opnieuw.');
     } finally {
       setIsSubmitting(false);
     }
@@ -54,7 +64,6 @@ const ComingSoon: React.FC = () => {
         
         <main className="flex-grow flex items-center justify-center bg-gradient-to-b from-white to-gray-100">
           <div className="container mx-auto px-4 py-16 text-center">
-            {/* Main Content */}
             <div className={`space-y-8 transform transition-all duration-1000 ${
               isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
             }`}>
@@ -72,7 +81,6 @@ const ComingSoon: React.FC = () => {
                 We zijn volop bezig met de ontwikkeling van onze website. 
               </p>
               
-              {/* Countdown or notification signup could be added here */}
               <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg p-6 animate-slide-up">
                 <p className="text-gray-700 mb-4">
                   Wil je op de hoogte blijven van het process?
@@ -108,8 +116,6 @@ const ComingSoon: React.FC = () => {
                   )}
                 </form>
               </div>
-              
-              
             </div>
           </div>
         </main>
