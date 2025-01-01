@@ -4,13 +4,13 @@
 /node_modules
 /.pnp
 .pnp.js
-/guide2umrah
 
 # testing
 /coverage
 
 # production
 /build
+/guide2umrah
 
 # misc
 .DS_Store
