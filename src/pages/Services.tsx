@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import SEO from "../components/SEO";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import backgroundImage from "../assets/mekkahfullscreen.jpg";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import CopyableImage from '../components/CopyableImage';
 
 interface Service {
   _id: string;
@@ -15,12 +16,15 @@ interface Service {
   description: string;
   price: number;
   photoPaths: string[];
+  image: string;
+  title: string;
 }
 
 const Services: React.FC = () => {
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -40,6 +44,10 @@ const Services: React.FC = () => {
 
     fetchServices();
   }, []);
+
+  const handleServiceClick = (service: Service) => {
+    navigate(`/services/${service._id}`);
+  };
 
   return (
     <>
@@ -83,21 +91,27 @@ const Services: React.FC = () => {
             ) : services.length > 0 ? (
               <div className="bg-transparent p-6 rounded-lg shadow-lg space-y-8 mt-12 md:mt-16 lg:mt-24">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {services.map((service) => (
+                  {services.map((service, index) => (
                     <div
                       key={service._id}
-                      className="bg-gray-100 p-4 rounded-lg shadow-md"
+                      className="bg-gray-100 p-4 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
+                      onClick={() => handleServiceClick(service)}
+                      style={{ cursor: 'pointer' }}
                     >
                       <div className="h-48 mb-4">
                         <Swiper
-                          modules={[Navigation, Pagination]}
+                          modules={[Navigation, Pagination, Autoplay]}
                           navigation
                           pagination={{ clickable: true }}
+                          autoplay={{
+                            delay: 3000,
+                            disableOnInteraction: false,
+                          }}
                           className="h-full rounded-lg"
                         >
                           {service.photoPaths.map((path, index) => (
                             <SwiperSlide key={index}>
-                              <img
+                              <CopyableImage
                                 src={path}
                                 alt={`${service.name} ${index + 1}`}
                                 className="w-full h-full object-cover"
@@ -112,7 +126,7 @@ const Services: React.FC = () => {
                         Vanaf €{service.price}
                       </p>
                       <Link to={`/services/${service._id}`}>
-                        <button className="mt-6 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
+                        <button className="mt-6 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition w-full">
                           Meer Info
                         </button>
                       </Link>

@@ -4,10 +4,11 @@ import SEO from "../components/SEO";
 import backgroundImage from "../assets/mekkahfullscreen.jpg";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import CopyableImage from '../components/CopyableImage';
 
 interface Package {
   _id: string;
@@ -52,6 +53,10 @@ const Umrah: React.FC = () => {
     fetchPackages();
   }, []);
 
+  const handlePackageClick = (pkg: Package) => {
+    // implement handlePackageClick functionality here
+  };
+
   return (
     <>
       <SEO 
@@ -94,21 +99,27 @@ const Umrah: React.FC = () => {
             ) : packages.length > 0 ? (
               <div className="bg-transparent p-6 rounded-lg shadow-lg space-y-8 mt-12 md:mt-16 lg:mt-24">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {packages.map((pkg) => (
+                  {packages.map((pkg, index) => (
                     <div
                       key={pkg._id}
-                      className="bg-gray-100 p-4 rounded-lg shadow-md"
+                      className="bg-gray-100 p-4 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
+                      onClick={() => handlePackageClick(pkg)}
+                      style={{ cursor: 'pointer' }}
                     >
                       <div className="h-48 mb-4">
                         <Swiper
-                          modules={[Navigation, Pagination]}
+                          modules={[Navigation, Pagination, Autoplay]}
                           navigation
                           pagination={{ clickable: true }}
+                          autoplay={{
+                            delay: 3000,
+                            disableOnInteraction: false,
+                          }}
                           className="h-full rounded-lg"
                         >
                           {pkg.photoPaths.map((path, index) => (
                             <SwiperSlide key={index}>
-                              <img
+                              <CopyableImage
                                 src={path}
                                 alt={`${pkg.name} ${index + 1}`}
                                 className="w-full h-full object-cover"
@@ -119,12 +130,11 @@ const Umrah: React.FC = () => {
                       </div>
                       <h2 className="text-lg font-bold">{pkg.name}</h2>
                       <p className="text-sm text-gray-500">{pkg.date}</p>
-                      <p className="text-sm text-gray-500">{pkg.description}</p>
                       <p className="text-xl font-bold text-green-600 mt-4">
                         Vanaf €{pkg.price}
                       </p>
-                      <Link to={`/umrah/package/${pkg._id}`}>
-                        <button className="mt-6 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
+                      <Link to={`/umrah/${pkg._id}`}>
+                        <button className="mt-6 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition w-full">
                           Meer Info
                         </button>
                       </Link>

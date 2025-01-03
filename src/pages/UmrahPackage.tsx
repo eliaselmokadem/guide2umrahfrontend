@@ -4,10 +4,11 @@ import Navbar from "../components/Navbar";
 import SEO from "../components/SEO";
 import backgroundImage from "../assets/mekkahfullscreen.jpg";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import CopyableImage from '../components/CopyableImage';
 
 interface Package {
   _id: string;
@@ -16,6 +17,8 @@ interface Package {
   description: string;
   price: number;
   photoPaths: string[];
+  image: string;
+  title: string;
 }
 
 const UmrahPackage: React.FC = () => {
@@ -103,23 +106,36 @@ const UmrahPackage: React.FC = () => {
               {packageData.name}
             </h1>
 
-            <div className="h-96 mb-8">
-              <Swiper
-                modules={[Navigation, Pagination]}
-                navigation
-                pagination={{ clickable: true }}
-                className="h-full rounded-lg"
-              >
-                {packageData.photoPaths.map((path, index) => (
-                  <SwiperSlide key={index}>
-                    <img
-                      src={path}
-                      alt={`${packageData.name} ${index + 1}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
+            <div className="flex flex-col lg:flex-row lg:space-x-4 mb-8">
+              <div className="w-full lg:w-1/2">
+                <CopyableImage
+                  src={packageData.image}
+                  alt={packageData.title}
+                  className="w-full h-auto rounded-lg shadow-lg"
+                />
+              </div>
+              <div className="h-96 mb-8">
+                <Swiper
+                  modules={[Navigation, Pagination, Autoplay]}
+                  navigation
+                  pagination={{ clickable: true }}
+                  autoplay={{
+                    delay: 3000,
+                    disableOnInteraction: false,
+                  }}
+                  className="h-full rounded-lg"
+                >
+                  {packageData.photoPaths.map((path, index) => (
+                    <SwiperSlide key={index}>
+                      <CopyableImage
+                        src={path}
+                        alt={`${packageData.name} ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
             </div>
 
             <div className="space-y-6">

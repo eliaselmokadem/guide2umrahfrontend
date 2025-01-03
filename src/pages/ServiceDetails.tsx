@@ -3,10 +3,11 @@ import { useParams, Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import SEO from "../components/SEO";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import CopyableImage from '../components/CopyableImage';
 
 interface Service {
   _id: string;
@@ -86,16 +87,20 @@ const ServiceDetails: React.FC = () => {
               {serviceData.name}
             </h1>
             
-            <div className="h-96 mb-6">
+            <div className="h-96 mb-8">
               <Swiper
-                modules={[Navigation, Pagination]}
+                modules={[Navigation, Pagination, Autoplay]}
                 navigation
                 pagination={{ clickable: true }}
+                autoplay={{
+                  delay: 3000,
+                  disableOnInteraction: false,
+                }}
                 className="h-full rounded-lg"
               >
                 {serviceData.photoPaths.map((path, index) => (
                   <SwiperSlide key={index}>
-                    <img
+                    <CopyableImage
                       src={path}
                       alt={`${serviceData.name} ${index + 1}`}
                       className="w-full h-full object-cover"
@@ -105,12 +110,23 @@ const ServiceDetails: React.FC = () => {
               </Swiper>
             </div>
 
-            <p className="text-3xl font-bold text-green-600 mb-4">
-              Vanaf €{serviceData.price}
-            </p>
-            <p className="text-lg text-gray-700 mb-8 leading-relaxed">
-              {serviceData.description}
-            </p>
+            <div className="flex flex-col lg:flex-row justify-center mb-8">
+              <div className="w-full lg:w-1/2">
+                <CopyableImage
+                  src={serviceData.photoPaths[0]}
+                  alt={serviceData.name}
+                  className="w-full h-auto rounded-lg shadow-lg"
+                />
+              </div>
+              <div className="w-full lg:w-1/2 lg:pl-8">
+                <p className="text-3xl font-bold text-green-600 mb-4">
+                  Vanaf €{serviceData.price}
+                </p>
+                <p className="text-lg text-gray-700 mb-8 leading-relaxed">
+                  {serviceData.description}
+                </p>
+              </div>
+            </div>
 
             <div className="flex justify-center mb-8">
               <a
