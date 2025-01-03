@@ -13,7 +13,12 @@ interface Service {
   _id: string;
   name: string;
   description: string;
-  price: number;
+  price: number | null;
+  isFree: boolean;
+  location: string;
+  startDate: string;
+  endDate: string;
+  numberOfRooms: number;
   photoPaths: string[];
 }
 
@@ -110,31 +115,67 @@ const ServiceDetails: React.FC = () => {
               </Swiper>
             </div>
 
-            <div className="flex flex-col lg:flex-row justify-center mb-8">
-              <div className="w-full lg:w-1/2">
-                <CopyableImage
-                  src={serviceData.photoPaths[0]}
-                  alt={serviceData.name}
-                  className="w-full h-auto rounded-lg shadow-lg"
-                />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+              <div className="space-y-6">
+                <div>
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-2">Locatie</h2>
+                  <p className="text-gray-600 flex items-center">
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    {serviceData.location}
+                  </p>
+                </div>
+
+                <div>
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-2">Periode</h2>
+                  <p className="text-gray-600 flex items-center">
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    {new Date(serviceData.startDate).toLocaleDateString()} - {new Date(serviceData.endDate).toLocaleDateString()}
+                  </p>
+                </div>
+
+                <div>
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-2">Accommodatie</h2>
+                  <p className="text-gray-600 flex items-center">
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    {serviceData.numberOfRooms} kamers beschikbaar
+                  </p>
+                </div>
+
+                <div>
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-2">Prijs</h2>
+                  {serviceData.isFree ? (
+                    <p className="text-3xl font-bold text-green-600">Gratis</p>
+                  ) : (
+                    <p className="text-3xl font-bold text-green-600">
+                      {serviceData.price ? `Vanaf €${serviceData.price}` : 'Prijs op aanvraag'}
+                    </p>
+                  )}
+                </div>
               </div>
-              <div className="w-full lg:w-1/2 lg:pl-8">
-                <p className="text-3xl font-bold text-green-600 mb-4">
-                  Vanaf €{serviceData.price}
-                </p>
-                <p className="text-lg text-gray-700 mb-8 leading-relaxed">
+
+              <div>
+                <h2 className="text-2xl font-semibold text-gray-800 mb-2">Beschrijving</h2>
+                <p className="text-gray-600 leading-relaxed whitespace-pre-wrap">
                   {serviceData.description}
                 </p>
               </div>
             </div>
 
-            <div className="flex justify-center mb-8">
+            <div className="flex justify-center space-x-4 mb-8">
               <a
                 href={`https://wa.me/+32465349779?text=Ik%20ben%20ge%C3%AFnteresseerd%20in%20de%20service%20${serviceData.name}%20en%20wil%20meer%20informatie%20ontvangen.`}
                 target="_blank"
                 rel="noopener noreferrer"
+                className="w-full max-w-md"
               >
-                <button className="bg-green-500 text-white px-8 py-4 rounded-full hover:bg-green-600 transition-all duration-300 shadow-lg transform hover:scale-105">
+                <button className="w-full bg-green-500 text-white px-8 py-4 rounded-full hover:bg-green-600 transition-all duration-300 shadow-lg transform hover:scale-105">
                   Contact via WhatsApp
                 </button>
               </a>

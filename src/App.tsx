@@ -8,14 +8,16 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import WhatsAppButton from "./components/WhatsAppButton";
+//import Contact from "./pages/Contact";
 
 // Temporarily unused imports
 // import Home from "./pages/Home";
-import Umrah from "./pages/Umrah";
+//import Umrah from "./pages/Umrah";
 // import AboutUs from "./pages/Aboutus";
- import UmrahPackage from "./pages/UmrahPackage";
-  import Services from "./pages/Services";
- import ServiceDetails from "./pages/ServiceDetails";
+ //import UmrahPackage from "./pages/UmrahPackage";
+  //import Services from "./pages/Services";
+// import ServiceDetails from "./pages/ServiceDetails";
+// import CustomPackage from "./pages/CustomPackage";
 
 function App() {
   return (
@@ -32,12 +34,14 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/umrah" element={<Umrah />} />
-          <Route path="/umrah-package" element={<UmrahPackage />} />
-          <Route path="/services" element={<Services />} />
+          {/* <Route path="/umrah" element={<Umrah />} /> }
+          { <Route path="/umrah-package" element={<UmrahPackage />} /> }
+           <Route path="/services" element={<Services />} />
           <Route path="/service-details" element={<ServiceDetails />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/custom-package" element={<CustomPackage />} />
           
-          {/* Coming soon page */}
+           Coming soon page */}
           <Route path="/coming-soon" element={<ComingSoon />} />
           
           {/* Redirect all other routes to coming-soon */}
