@@ -14,7 +14,7 @@ export const BackgroundImage: React.FC<BackgroundImageProps> = ({
   className = '',
   fallbackImage
 }) => {
-  const { backgroundImage, isLoading } = useBackgroundImage(pageName);
+  const { backgroundImage } = useBackgroundImage(pageName);
 
   const style: React.CSSProperties = {
     backgroundImage: `url(${backgroundImage || fallbackImage})`,

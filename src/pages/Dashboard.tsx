@@ -155,7 +155,7 @@ const Dashboard: React.FC = () => {
       setPackageData(prev => {
         const newDestinations = [...prev.destinations];
         if (name.startsWith('roomTypes.')) {
-          const [_, roomType, field] = name.split('.');
+          const [, roomType, field] = name.split('.');
           if (type === "checkbox") {
             const checked = (e.target as HTMLInputElement).checked;
             newDestinations[destinationIndex] = {
