@@ -31,7 +31,7 @@ const AboutUs: React.FC = () => {
         <div className="container mx-auto px-4 py-2 flex-grow">
           <h2 className="text-3xl font-bold text-gray-800 mb-6">Wie zijn wij?</h2>
           <p className="text-gray-700 leading-relaxed">
-            Bij Umrah België streven we ernaar om unieke en spirituele ervaringen
+            Bij Guide2Umrah streven we ernaar om unieke en spirituele ervaringen
             te bieden aan onze reizigers. Ons doel is om uw reis naar Mekka en
             Medina onvergetelijk te maken. Met onze jarenlange ervaring en
             toewijding zorgen we voor een zorgeloze en gedenkwaardige Umrah-reis.
