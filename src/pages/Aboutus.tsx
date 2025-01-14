@@ -41,7 +41,7 @@ const AboutUs: React.FC = () => {
             Onze Missie
           </h3>
           <p className="text-gray-700 leading-relaxed">
-            Onze missie is om moslims in België de mogelijkheid te bieden om hun
+            Onze missie is om moslims in België en Nederland de mogelijkheid te bieden om hun
             spirituele reis te maken met de beste ondersteuning en begeleiding.
             Wij zorgen voor comfort, veiligheid en een diepe verbinding met de
             islamitische waarden tijdens uw reis.
