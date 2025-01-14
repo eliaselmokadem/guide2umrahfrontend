@@ -3,28 +3,27 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { HelmetProvider } from 'react-helmet-async';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ComingSoon from "./pages/ComingSoon";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import WhatsAppButton from "./components/WhatsAppButton";
-//import Contact from "./pages/Contact";
+import Contact from "./pages/Contact";
 
-// Temporarily unused imports
-// import Home from "./pages/Home";
-//import Umrah from "./pages/Umrah";
-// import AboutUs from "./pages/Aboutus";
- //import UmrahPackage from "./pages/UmrahPackage";
-  //import Services from "./pages/Services";
-// import ServiceDetails from "./pages/ServiceDetails";
-// import CustomPackage from "./pages/CustomPackage";
+// Main imports
+import Home from "./pages/Home";
+import Umrah from "./pages/Umrah";
+import AboutUs from "./pages/Aboutus"; // Fix: import AboutUs from correct path
+import UmrahPackage from "./pages/UmrahPackage";
+import Services from "./pages/Services";
+import ServiceDetails from "./pages/ServiceDetails";
+import CustomPackage from "./pages/CustomPackage";
 
 function App() {
   return (
     <HelmetProvider>
       <Router>
         <Routes>
-          {/* Essential routes that should remain accessible */}
+          {/* Essential routes */}
           <Route path="/login" element={<Login />} />
           <Route
             path="/dashboard"
@@ -34,18 +33,20 @@ function App() {
               </ProtectedRoute>
             }
           />
-          {/* <Route path="/umrah" element={<Umrah />} /> }
-          { <Route path="/umrah-package" element={<UmrahPackage />} /> }
-           <Route path="/services" element={<Services />} />
-          <Route path="/service-details" element={<ServiceDetails />} />
+          
+          {/* Main routes */}
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/aboutus" element={<AboutUs />} />
+          <Route path="/umrah" element={<Umrah />} /> 
+          <Route path="/umrah-package/:packageId" element={<UmrahPackage />} /> 
+          <Route path="/services" element={<Services />} />
+          <Route path="/services/:serviceId" element={<ServiceDetails />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/custom-package" element={<CustomPackage />} />
+          <Route path="/custom-package" element={<CustomPackage />} /> 
           
-           Coming soon page */}
-          <Route path="/coming-soon" element={<ComingSoon />} />
-          
-          {/* Redirect all other routes to coming-soon */}
-          <Route path="*" element={<Navigate to="/coming-soon" replace />} />
+          {/* Redirect unknown routes to home */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         <WhatsAppButton />
         <ToastContainer />

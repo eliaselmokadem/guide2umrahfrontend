@@ -22,11 +22,29 @@ interface Service {
   photoPaths: string[];
 }
 
+interface IUserInfo {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  comments?: string;
+}
+
 const ServiceDetails: React.FC = () => {
   const { serviceId } = useParams<{ serviceId: string }>();
   const [serviceData, setServiceData] = useState<Service | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [userInfo, setUserInfo] = useState<IUserInfo>({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    comments: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   useEffect(() => {
     const fetchService = async () => {
@@ -46,6 +64,53 @@ const ServiceDetails: React.FC = () => {
 
     fetchService();
   }, [serviceId]);
+
+  const handleUserInfoChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setUserInfo(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitError(null);
+    setSubmitSuccess(false);
+
+    try {
+      const response = await fetch('https://guide2umrah.onrender.com/api/service-inquiry', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          serviceId,
+          serviceName: serviceData?.name,
+          price: serviceData?.price,
+          userInfo,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Er is iets misgegaan bij het versturen van je aanvraag.');
+      }
+
+      setSubmitSuccess(true);
+      setUserInfo({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        comments: ''
+      });
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : 'Er is iets misgegaan.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   if (loading) {
     return <p>Loading...</p>;
@@ -71,128 +136,177 @@ const ServiceDetails: React.FC = () => {
   }
 
   return (
-    <>
-      <SEO 
-        title={`Guide2Umrah - ${serviceData?.name || 'Service Details'}`}
-        description={serviceData?.description || 'Bekijk de details van onze service voor uw Umrah-reis. Professionele begeleiding en ondersteuning voor een zorgeloze reis.'}
-      />
-      <div
-        style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6))`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          minHeight: "100vh",
-          color: "#f0f0f0",
-        }}
-      >
-        <Navbar />
-        <div className="container mx-auto px-4 py-10 flex flex-col items-center">
-          <div className="bg-white p-10 rounded-lg shadow-2xl max-w-3xl w-full">
-            <h1 className="text-5xl font-bold text-gray-800 mb-6 text-center">
-              {serviceData.name}
-            </h1>
-            
-            <div className="h-96 mb-8">
+    <div className="min-h-screen bg-gray-100">
+      <SEO title={serviceData?.name || 'Service Details'} description={serviceData?.description || ''} />
+      <Navbar />
+      <div className="container mx-auto px-4 py-8">
+        {loading ? (
+          <div className="text-center">Loading...</div>
+        ) : error ? (
+          <div className="text-center text-red-600">{error}</div>
+        ) : serviceData ? (
+          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+            {/* Image Slider */}
+            <div className="relative">
               <Swiper
                 modules={[Navigation, Pagination, Autoplay]}
+                spaceBetween={0}
+                slidesPerView={1}
                 navigation
                 pagination={{ clickable: true }}
-                autoplay={{
-                  delay: 3000,
-                  disableOnInteraction: false,
-                }}
-                className="h-full rounded-lg"
+                autoplay={{ delay: 3000 }}
+                className="h-96"
               >
-                {serviceData.photoPaths.map((path, index) => (
+                {serviceData.photoPaths.map((photo, index) => (
                   <SwiperSlide key={index}>
-                    <CopyableImage
-                      src={path}
-                      alt={`${serviceData.name} ${index + 1}`}
-                      className="w-full h-full object-cover"
+                    <CopyableImage 
+                      src={photo} 
+                      alt={`${serviceData.name} - Photo ${index + 1}`} 
+                      className="w-full h-full object-cover" 
                     />
                   </SwiperSlide>
                 ))}
               </Swiper>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-              <div className="space-y-6">
-                <div>
-                  <h2 className="text-2xl font-semibold text-gray-800 mb-2">Locatie</h2>
-                  <p className="text-gray-600 flex items-center">
-                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                    </svg>
-                    {serviceData.location}
-                  </p>
-                </div>
-
-                <div>
-                  <h2 className="text-2xl font-semibold text-gray-800 mb-2">Periode</h2>
-                  <p className="text-gray-600 flex items-center">
-                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                    </svg>
-                    {new Date(serviceData.startDate).toLocaleDateString()} - {new Date(serviceData.endDate).toLocaleDateString()}
-                  </p>
-                </div>
-
-                <div>
-                  <h2 className="text-2xl font-semibold text-gray-800 mb-2">Accommodatie</h2>
-                  <p className="text-gray-600 flex items-center">
-                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                    </svg>
-                    {serviceData.numberOfRooms} kamers beschikbaar
-                  </p>
-                </div>
-
-                <div>
-                  <h2 className="text-2xl font-semibold text-gray-800 mb-2">Prijs</h2>
+            {/* Service Details */}
+            <div className="p-6">
+              <h1 className="text-3xl font-bold text-gray-900 mb-4">{serviceData.name}</h1>
+              <div className="flex items-center justify-between mb-4">
+                <div className="text-lg font-semibold text-gray-900">
                   {serviceData.isFree ? (
-                    <p className="text-3xl font-bold text-green-600">Gratis</p>
+                    <span className="text-green-600">Gratis</span>
                   ) : (
-                    <p className="text-3xl font-bold text-green-600">
-                      {serviceData.price ? `Vanaf €${serviceData.price}` : 'Prijs op aanvraag'}
-                    </p>
+                    <span>€{serviceData.price}</span>
                   )}
                 </div>
+                <div className="text-gray-600">
+                  {serviceData.location}
+                </div>
+              </div>
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold text-gray-900 mb-2">Beschrijving</h2>
+                <p className="text-gray-700 whitespace-pre-line">{serviceData.description}</p>
+              </div>
+              <div className="flex flex-wrap gap-4 text-gray-600">
+                <div>
+                  <span className="font-semibold">Start datum:</span> {new Date(serviceData.startDate).toLocaleDateString()}
+                </div>
+                <div>
+                  <span className="font-semibold">Eind datum:</span> {new Date(serviceData.endDate).toLocaleDateString()}
+                </div>
               </div>
 
-              <div>
-                <h2 className="text-2xl font-semibold text-gray-800 mb-2">Beschrijving</h2>
-                <p className="text-gray-600 leading-relaxed whitespace-pre-wrap">
-                  {serviceData.description}
-                </p>
-              </div>
-            </div>
+              {/* Contact Form */}
+              <div className="p-6">
+                <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-lg mt-8">
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-6">Interesse in deze dienst?</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label htmlFor="firstName" className="block text-gray-700 mb-2">Voornaam *</label>
+                      <input
+                        type="text"
+                        id="firstName"
+                        name="firstName"
+                        value={userInfo.firstName}
+                        onChange={handleUserInfoChange}
+                        required
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="lastName" className="block text-gray-700 mb-2">Achternaam *</label>
+                      <input
+                        type="text"
+                        id="lastName"
+                        name="lastName"
+                        value={userInfo.lastName}
+                        onChange={handleUserInfoChange}
+                        required
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="email" className="block text-gray-700 mb-2">E-mail *</label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={userInfo.email}
+                        onChange={handleUserInfoChange}
+                        required
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="phone" className="block text-gray-700 mb-2">Telefoonnummer *</label>
+                      <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        value={userInfo.phone}
+                        onChange={handleUserInfoChange}
+                        required
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      />
+                    </div>
+                  </div>
+                  <div className="mt-6">
+                    <label htmlFor="comments" className="block text-gray-700 mb-2">Opmerkingen</label>
+                    <textarea
+                      id="comments"
+                      name="comments"
+                      value={userInfo.comments}
+                      onChange={handleUserInfoChange}
+                      rows={4}
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                    />
+                  </div>
 
-            <div className="flex justify-center space-x-4 mb-8">
-              <a
-                href={`https://wa.me/+32465349779?text=Ik%20ben%20ge%C3%AFnteresseerd%20in%20de%20service%20${serviceData.name}%20en%20wil%20meer%20informatie%20ontvangen.`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full max-w-md"
-              >
-                <button className="w-full bg-green-500 text-white px-8 py-4 rounded-full hover:bg-green-600 transition-all duration-300 shadow-lg transform hover:scale-105">
+                  {submitError && (
+                    <div className="mt-4 p-3 bg-red-100 text-red-700 rounded-lg">
+                      {submitError}
+                    </div>
+                  )}
+
+                  {submitSuccess && (
+                    <div className="mt-4 p-3 bg-green-100 text-green-700 rounded-lg">
+                      Je aanvraag is succesvol verzonden! We nemen zo spoedig mogelijk contact met je op.
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={`mt-6 w-full py-3 px-6 rounded-lg text-white font-semibold ${
+                      isSubmitting
+                        ? 'bg-gray-400 cursor-not-allowed'
+                        : 'bg-green-600 hover:bg-green-700'
+                    }`}
+                  >
+                    {isSubmitting ? 'Bezig met verzenden...' : 'Verstuur Aanvraag'}
+                  </button>
+                </form>
+              </div>
+
+              {/* Contact Button */}
+              <div className="mt-8">
+                <a
+                  href={`https://wa.me/+32465349779?text=Ik%20ben%20ge%C3%AFnteresseerd%20in%20de%20service%20${serviceData.name}%20en%20wil%20meer%20informatie%20ontvangen.`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                >
                   Contact via WhatsApp
-                </button>
-              </a>
-            </div>
-
-            <div className="flex justify-center">
-              <Link
-                to="/services"
-                className="text-green-500 hover:text-green-600 text-lg font-semibold"
-              >
-                Terug naar services
-              </Link>
+                </a>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="text-center">Service not found</div>
+        )}
       </div>
-    </>
+    </div>
   );
 };
 

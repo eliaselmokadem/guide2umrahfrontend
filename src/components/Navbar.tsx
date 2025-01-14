@@ -33,7 +33,7 @@ const Navbar: React.FC = () => {
     }`}>
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
         <div className="flex justify-between items-center h-14 sm:h-16">
-          <Link to="/coming-soon" className="flex-shrink-0">
+          <Link to="/" className="flex-shrink-0">
             <img 
               src={logo} 
               className={`h-[40px] sm:h-[50px] md:h-[60px] transition-all duration-300 ${
@@ -69,23 +69,33 @@ const Navbar: React.FC = () => {
           {/* Desktop menu */}
           <ul className="hidden md:flex items-center space-x-2 lg:space-x-4">
             <li>
-              <Link to="/coming-soon" className="px-2 py-2 text-base lg:text-lg hover:text-green-500 transition-colors">
+              <Link to="/" className="px-2 py-2 text-base lg:text-lg hover:text-green-500 transition-colors">
                 Home
               </Link>
             </li>
             <li>
-              <Link to="/coming-soon" className="px-2 py-2 text-base lg:text-lg hover:text-green-500 transition-colors">
+              <Link to="/umrah" className="px-2 py-2 text-base lg:text-lg hover:text-green-500 transition-colors">
                 Umrah
               </Link>
             </li>
             <li>
-              <Link to="/coming-soon" className="px-2 py-2 text-base lg:text-lg hover:text-green-500 transition-colors">
+              <Link to="/services" className="px-2 py-2 text-base lg:text-lg hover:text-green-500 transition-colors">
                 Services
               </Link>
             </li>
             <li>
               <Link to="/aboutus" className="px-2 py-2 text-base lg:text-lg hover:text-green-500 transition-colors">
                 Over ons
+              </Link>
+            </li>
+            <li>
+              <Link to="/contact" className="px-2 py-2 text-base lg:text-lg hover:text-green-500 transition-colors">
+                Contact
+              </Link>
+            </li>
+            <li>
+              <Link to="/custom-package" className="px-2 py-2 text-base lg:text-lg hover:text-green-500 transition-colors">
+                Stel je pakket samen
               </Link>
             </li>
             
@@ -110,8 +120,8 @@ const Navbar: React.FC = () => {
         {/* Mobile menu */}
         <div
           className={`${
-            isOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
-          } md:hidden overflow-hidden transition-all duration-300 ease-in-out`}
+            isOpen ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0"
+          } md:hidden overflow-y-auto transition-all duration-300 ease-in-out`}
         >
           <ul className="flex flex-col space-y-2 pb-3 bg-gradient-to-b from-black/40 to-transparent w-screen -mx-3 px-3">
             <li>
@@ -125,7 +135,7 @@ const Navbar: React.FC = () => {
             </li>
             <li>
               <Link
-                to="/coming-soon"
+                to="/umrah"
                 className="block px-3 py-2 text-base text-white hover:text-green-500 transition-colors rounded-lg hover:bg-white/10"
                 onClick={() => setIsOpen(false)}
               >
@@ -135,7 +145,7 @@ const Navbar: React.FC = () => {
 
             <li>
               <Link
-                to="/coming-soon"
+                to="/services"
                 className="block px-3 py-2 text-base text-white hover:text-green-500 transition-colors rounded-lg hover:bg-white/10"
                 onClick={() => setIsOpen(false)}
               >
@@ -149,6 +159,24 @@ const Navbar: React.FC = () => {
                 onClick={() => setIsOpen(false)}
               >
                 Over ons
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/contact"
+                className="block px-3 py-2 text-base text-white hover:text-green-500 transition-colors rounded-lg hover:bg-white/10"
+                onClick={() => setIsOpen(false)}
+              >
+                Contact
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/custom-package"
+                className="block px-3 py-2 text-base text-white hover:text-green-500 transition-colors rounded-lg hover:bg-white/10"
+                onClick={() => setIsOpen(false)}
+              >
+                Stel je pakket samen
               </Link>
             </li>
             <li className="px-3 pt-1">
