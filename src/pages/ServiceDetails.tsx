@@ -16,8 +16,8 @@ interface Service {
   price: number | null;
   isFree: boolean;
   location: string;
-  startDate: string;
-  endDate: string;
+  startDate?: string;
+  endDate?: string;
   numberOfRooms: number;
   photoPaths: string[];
 }
@@ -188,12 +188,15 @@ const ServiceDetails: React.FC = () => {
                 <h2 className="text-xl font-semibold text-gray-900 mb-2">Beschrijving</h2>
                 <p className="text-gray-700 whitespace-pre-line">{serviceData.description}</p>
               </div>
+              {serviceData.startDate && serviceData.endDate && (
+                <div className="mb-4">
+                  <h3 className="text-lg font-semibold mb-2">Datum:</h3>
+                  <p>{new Date(serviceData.startDate).toLocaleDateString()} - {new Date(serviceData.endDate).toLocaleDateString()}</p>
+                </div>
+              )}
               <div className="flex flex-wrap gap-4 text-gray-600">
                 <div>
-                  <span className="font-semibold">Start datum:</span> {new Date(serviceData.startDate).toLocaleDateString()}
-                </div>
-                <div>
-                  <span className="font-semibold">Eind datum:</span> {new Date(serviceData.endDate).toLocaleDateString()}
+                  <span className="font-semibold">Aantal kamers:</span> {serviceData.numberOfRooms}
                 </div>
               </div>
 

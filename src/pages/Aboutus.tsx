@@ -1,67 +1,70 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import Banner from "../assets/banner.jpg";
-import Footer from "../components/Footer"; // Import de Footer
 import SEO from "../components/SEO";
+import { BackgroundImage } from '../components/BackgroundImage';
+import Footer from "../components/Footer"; // Import de Footer
 
-const AboutUs: React.FC = () => {
+interface AboutUsContent {
+  content: string;
+  updatedAt: string;
+}
+
+const Aboutus: React.FC = () => {
+  const [content, setContent] = useState<string>('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const response = await fetch('https://guide2umrah.onrender.com/api/about-us');
+        if (!response.ok) {
+          throw new Error('Failed to fetch about us content');
+        }
+        const data: AboutUsContent = await response.json();
+        setContent(data.content);
+      } catch (err) {
+        console.error('Error fetching about us content:', err);
+        setError('Er is een fout opgetreden bij het laden van de content');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchContent();
+  }, []);
+
   return (
-    <>
-      <SEO 
-        title="Guide2Umrah - Over Ons"
-        description="Leer meer over Guide2Umrah, uw betrouwbare partner voor Umrah-reizen. Ontdek onze ervaring, expertise en toewijding aan kwaliteit en service."
+    <BackgroundImage pageName="aboutus" className="min-h-screen bg-cover bg-center">
+      <SEO
+        title="Over Ons | Guide2Umrah"
+        description="Leer meer over Guide2Umrah en onze missie om u te helpen bij uw spirituele reis."
       />
-      <div className="flex flex-col min-h-screen">
-        {/* Navbar */}
-        <Navbar />
-
-        {/* Hero Sectie */}
-        <div
-          className="bg-cover bg-center relative mb-2"
-          style={{
-            backgroundImage: `url(${Banner})`,
-            height: "400px",
-            backgroundSize: "contain", // Veranderd naar contain
-            backgroundPosition: "center", // Zorgt ervoor dat de afbeelding in het midden blijft
-            backgroundRepeat: "no-repeat", // Herhaal de afbeelding niet
-          }}
-        ></div>
-
-        {/* About Us Content */}
-        <div className="container mx-auto px-4 py-2 flex-grow">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6">Wie zijn wij?</h2>
-          <p className="text-gray-700 leading-relaxed">
-            Bij Guide2Umrah streven we ernaar om unieke en spirituele ervaringen
-            te bieden aan onze reizigers. Ons doel is om uw reis naar Mekka en
-            Medina onvergetelijk te maken. Met onze jarenlange ervaring en
-            toewijding zorgen we voor een zorgeloze en gedenkwaardige Umrah-reis.
-          </p>
-
-          <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-            Onze Missie
-          </h3>
-          <p className="text-gray-700 leading-relaxed">
-            Onze missie is om moslims in België en Nederland de mogelijkheid te bieden om hun
-            spirituele reis te maken met de beste ondersteuning en begeleiding.
-            Wij zorgen voor comfort, veiligheid en een diepe verbinding met de
-            islamitische waarden tijdens uw reis.
-          </p>
-
-          <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-            Waarom kiezen voor ons?
-          </h3>
-          <ul className="list-disc list-inside text-gray-700 space-y-2">
-            <li>Ervaren reisbegeleiding</li>
-            <li>Comfortabele accommodaties</li>
-            <li>Uitgebreide klantenservice</li>
-          </ul>
+      <Navbar />
+      
+      <div className="container mx-auto px-4 py-12">
+        <div className="max-w-4xl mx-auto bg-white/90 backdrop-blur-sm rounded-lg shadow-lg p-6 sm:p-8 md:p-12">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-8">
+            Over Ons
+          </h1>
+          
+          {loading ? (
+            <div className="flex justify-center items-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+            </div>
+          ) : error ? (
+            <div className="text-red-600 text-center py-8">{error}</div>
+          ) : (
+            <div 
+              className="prose prose-lg max-w-none"
+              dangerouslySetInnerHTML={{ __html: content }}
+            />
+          )}
         </div>
-
-        {/* Footer - sticky and at the bottom */}
-        <Footer />
       </div>
-    </>
+      <Footer />
+    </BackgroundImage>
   );
 };
 
-export default AboutUs;
+export default Aboutus;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { BackgroundImageManager } from "../components/admin/BackgroundImageManager";
+import { Editor } from '@tinymce/tinymce-react';
 
 interface RoomTypes {
   singleRoom: { available: boolean; quantity: number; price: number };
@@ -49,8 +50,8 @@ interface Service {
   description: string;
   isFree: boolean;
   location: string;
-  startDate: string;
-  endDate: string;
+  startDate?: string;
+  endDate?: string;
   photoPaths: string[];
   price: number;
 }
@@ -58,6 +59,7 @@ interface Service {
 const Dashboard: React.FC = () => {
   const [showPackageModal, setShowPackageModal] = useState(false);
   const [showServiceModal, setShowServiceModal] = useState(false);
+  const [showAboutUsEditor, setShowAboutUsEditor] = useState(false);
   const [packageData, setPackageData] = useState<PackageFormData>({
     name: "",
     description: "",
@@ -95,6 +97,7 @@ const Dashboard: React.FC = () => {
   const [showPackages, setShowPackages] = useState(true);
   const [showServices, setShowServices] = useState(true);
   const [showBackgrounds, setShowBackgrounds] = useState(true);
+  const [aboutUsContent, setAboutUsContent] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -105,22 +108,25 @@ const Dashboard: React.FC = () => {
 
     const fetchData = async () => {
       try {
-        const [packagesResponse, servicesResponse] = await Promise.all([
+        const [packagesResponse, servicesResponse, aboutUsResponse] = await Promise.all([
           fetch(`${process.env.REACT_APP_API_URL}/api/packages`),
-          fetch(`${process.env.REACT_APP_API_URL}/api/services`)
+          fetch(`${process.env.REACT_APP_API_URL}/api/services`),
+          fetch(`${process.env.REACT_APP_API_URL}/api/about-us`)
         ]);
 
-        if (!packagesResponse.ok || !servicesResponse.ok) {
+        if (!packagesResponse.ok || !servicesResponse.ok || !aboutUsResponse.ok) {
           throw new Error("Failed to fetch data");
         }
 
-        const [packagesData, servicesData] = await Promise.all([
+        const [packagesData, servicesData, aboutUsData] = await Promise.all([
           packagesResponse.json(),
-          servicesResponse.json()
+          servicesResponse.json(),
+          aboutUsResponse.json()
         ]);
 
         setPackages(packagesData);
         setServices(servicesData);
+        setAboutUsContent(aboutUsData.content || '');
       } catch (err) {
         console.error("Error fetching data:", err);
         setError("Error fetching data");
@@ -505,6 +511,28 @@ const Dashboard: React.FC = () => {
     window.location.href = '/';
   };
 
+  const handleSaveAboutUs = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/about-us`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ content: aboutUsContent })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update about us content');
+      }
+
+      alert('Over ons content is succesvol bijgewerkt!');
+    } catch (error) {
+      console.error('Error updating about us content:', error);
+      alert('Er is een fout opgetreden bij het bijwerken van de content');
+    }
+  };
+
   return (
     <div>
       <Navbar />
@@ -550,6 +578,57 @@ const Dashboard: React.FC = () => {
                 <BackgroundImageManager pageName="services" className="mb-4" />
                 <BackgroundImageManager pageName="about" className="mb-4" />
                 <BackgroundImageManager pageName="contact" className="mb-4" />
+              </div>
+            )}
+          </div>
+
+          {/* About Us Editor Section */}
+          <div className="mb-12">
+            <div 
+              className="flex justify-between items-center mb-6 cursor-pointer bg-gray-50 p-4 rounded-lg hover:bg-gray-100"
+              onClick={() => setShowAboutUsEditor(!showAboutUsEditor)}
+            >
+              <h3 className="text-2xl font-bold text-gray-700 flex items-center gap-2">
+                Over Ons Content Bewerken
+                <svg
+                  className={`w-6 h-6 transform transition-transform ${showAboutUsEditor ? 'rotate-180' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </h3>
+            </div>
+
+            {showAboutUsEditor && (
+              <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 className="text-2xl font-bold mb-4">Over Ons Content Bewerken</h2>
+                <Editor
+                  apiKey={'1h7ux2cme35kkpzezfaosh5wzjcfm8yh2tfenghoxj58sp5h'}
+                  value={aboutUsContent}
+                  onEditorChange={(content) => setAboutUsContent(content)}
+                  init={{
+                    height: 500,
+                    menubar: true,
+                    plugins: [
+                      'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                      'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                      'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+                    ],
+                    toolbar: 'undo redo | blocks | ' +
+                      'bold italic forecolor | alignleft aligncenter ' +
+                      'alignright alignjustify | bullist numlist outdent indent | ' +
+                      'removeformat | help',
+                    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                  }}
+                />
+                <button
+                  onClick={handleSaveAboutUs}
+                  className="mt-4 bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600"
+                >
+                  Opslaan
+                </button>
               </div>
             )}
           </div>
@@ -1067,7 +1146,6 @@ const Dashboard: React.FC = () => {
                       type="date"
                       value={serviceData.startDate}
                       onChange={handleServiceInputChange}
-                      required
                       className="w-full px-4 py-2 mt-1 border rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
@@ -1084,7 +1162,6 @@ const Dashboard: React.FC = () => {
                       type="date"
                       value={serviceData.endDate}
                       onChange={handleServiceInputChange}
-                      required
                       className="w-full px-4 py-2 mt-1 border rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
