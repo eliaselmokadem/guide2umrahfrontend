@@ -231,7 +231,7 @@ const Services: React.FC = () => {
                     key={service._id}
                     className="bg-gray-100 p-4 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
                   >
-                    <div className="h-48 mb-4">
+                    <div className="h-96">
                       <Swiper
                         modules={[Navigation, Pagination, Autoplay]}
                         navigation
@@ -240,14 +240,14 @@ const Services: React.FC = () => {
                           delay: 3000,
                           disableOnInteraction: false,
                         }}
-                        className="h-full rounded-lg"
+                        className="h-96"
                       >
                         {service.photoPaths.map((path, index) => (
-                          <SwiperSlide key={index}>
+                          <SwiperSlide key={index} className="h-96">
                             <CopyableImage
                               src={path}
                               alt={`${service.name} ${index + 1}`}
-                              className="w-full h-full object-cover"
+                              className="w-full h-96 object-contain"
                             />
                           </SwiperSlide>
                         ))}

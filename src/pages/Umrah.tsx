@@ -242,32 +242,34 @@ const Umrah: React.FC = () => {
                 {filteredPackages.map((pkg) => (
                   <div
                     key={pkg._id}
-                    className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 cursor-pointer"
+                    className="bg-gray-100 p-4 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
                     onClick={() => handlePackageClick(pkg)}
                   >
                     {pkg.destinations && pkg.destinations.length > 0 && (
-                      <Swiper
-                        modules={[Navigation, Pagination, Autoplay]}
-                        navigation
-                        pagination={{ clickable: true }}
-                        autoplay={{ delay: 5000 }}
-                        className="h-64"
-                      >
-                        {pkg.destinations.map((destination, destIndex) => 
-                          destination.photoPaths.map((photo, photoIndex) => (
-                            <SwiperSlide key={`${destIndex}-${photoIndex}`}>
-                              <CopyableImage
-                                src={photo}
-                                alt={`${pkg.name} - ${destination.location}`}
-                                className="w-full h-full object-cover"
-                              />
-                            </SwiperSlide>
-                          ))
-                        )}
-                      </Swiper>
+                      <div className="h-96">
+                        <Swiper
+                          modules={[Navigation, Pagination, Autoplay]}
+                          navigation
+                          pagination={{ clickable: true }}
+                          autoplay={{ delay: 5000 }}
+                          className="h-96"
+                        >
+                          {pkg.destinations.map((destination, destIndex) => 
+                            destination.photoPaths.map((photo, photoIndex) => (
+                              <SwiperSlide key={`${destIndex}-${photoIndex}`} className="h-96">
+                                <CopyableImage
+                                  src={photo}
+                                  alt={`${pkg.name} - ${destination.location}`}
+                                  className="w-full h-96 object-contain"
+                                />
+                              </SwiperSlide>
+                            ))
+                          )}
+                        </Swiper>
+                      </div>
                     )}
 
-                    <div className="p-4">
+                    <div className="mt-4">
                       <h3 className="text-xl font-semibold mb-2">{pkg.name}</h3>
                       <p className="text-gray-600 mb-4">{pkg.description}</p>
                       
