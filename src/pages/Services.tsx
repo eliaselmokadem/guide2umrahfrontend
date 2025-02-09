@@ -27,9 +27,6 @@ interface Service {
 const Services: React.FC = () => {
   const [services, setServices] = useState<Service[]>([]);
   const [filteredServices, setFilteredServices] = useState<Service[]>([]);
-  const [locations, setLocations] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState({
     location: '',
     minPrice: '',
@@ -49,16 +46,8 @@ const Services: React.FC = () => {
         const data = await response.json();
         setServices(data);
         setFilteredServices(data);
-        
-        // Extract unique locations with proper typing
-        const uniqueLocations = Array.from(
-          new Set(data.map((service: Service) => service.location))
-        ).sort() as string[];
-        setLocations(uniqueLocations);
       } catch (err) {
-        setError("Error loading services");
-      } finally {
-        setLoading(false);
+        console.error(err);
       }
     };
 
@@ -118,14 +107,6 @@ const Services: React.FC = () => {
     navigate(`/services/${service._id}`);
   };
 
-  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFilters(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
   return (
     <>
       <SEO 
@@ -140,90 +121,8 @@ const Services: React.FC = () => {
             Onze Services
           </h1>
 
-          {/* Filter Section */}
-          <div className="bg-white rounded-lg p-4 mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Locatie
-                </label>
-                <select
-                  name="location"
-                  value={filters.location}
-                  onChange={handleFilterChange}
-                  className="w-full p-2 border rounded-md"
-                >
-                  <option value="">Alle locaties</option>
-                  {locations.map((location) => (
-                    <option key={location} value={location}>
-                      {location}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Min. Prijs (€)
-                </label>
-                <input
-                  type="number"
-                  name="minPrice"
-                  value={filters.minPrice}
-                  onChange={handleFilterChange}
-                  className="w-full p-2 border rounded-md"
-                  placeholder="Min prijs"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Max. Prijs (€)
-                </label>
-                <input
-                  type="number"
-                  name="maxPrice"
-                  value={filters.maxPrice}
-                  onChange={handleFilterChange}
-                  className="w-full p-2 border rounded-md"
-                  placeholder="Max prijs"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Vanaf Datum
-                </label>
-                <input
-                  type="date"
-                  name="startDate"
-                  value={filters.startDate}
-                  onChange={handleFilterChange}
-                  className="w-full p-2 border rounded-md"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Sorteer op
-                </label>
-                <select
-                  name="sortBy"
-                  value={filters.sortBy}
-                  onChange={handleFilterChange}
-                  className="w-full p-2 border rounded-md"
-                >
-                  <option value="none">Geen sortering</option>
-                  <option value="priceAsc">Prijs (laag naar hoog)</option>
-                  <option value="priceDesc">Prijs (hoog naar laag)</option>
-                  <option value="dateAsc">Datum (vroeg naar laat)</option>
-                  <option value="dateDesc">Datum (laat naar vroeg)</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          {loading ? (
-            <p className="text-white">Laden...</p>
-          ) : error ? (
-            <p className="text-red-500">{error}</p>
-          ) : filteredServices.length > 0 ? (
+          
+          {filteredServices.length > 0 ? (
             <div className="bg-transparent p-6 rounded-lg shadow-lg space-y-8 mt-12 md:mt-16 lg:mt-24">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filteredServices.map((service, index) => (

@@ -57,12 +57,6 @@ const Umrah: React.FC = () => {
   const [filteredPackages, setFilteredPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [filters, setFilters] = useState({
-    minPrice: '',
-    maxPrice: '',
-    date: '',
-    sortBy: 'none'
-  });
 
   useEffect(() => {
     const fetchPackages = async () => {
@@ -97,61 +91,10 @@ const Umrah: React.FC = () => {
     let result = [...packages];
 
     // Filter by price range
-    if (filters.minPrice) {
-      result = result.filter(pkg => {
-        const lowestPrice = getLowestPrice(pkg.destinations);
-        return !pkg.isFree && lowestPrice > 0 && lowestPrice >= Number(filters.minPrice);
-      });
-    }
-    if (filters.maxPrice) {
-      result = result.filter(pkg => {
-        const lowestPrice = getLowestPrice(pkg.destinations);
-        return !pkg.isFree && lowestPrice > 0 && lowestPrice <= Number(filters.maxPrice);
-      });
-    }
-
     // Filter by date
-    if (filters.date) {
-      const filterDate = new Date(filters.date);
-      result = result.filter(pkg => 
-        pkg.destinations.some(dest => new Date(dest.startDate) >= filterDate)
-      );
-    }
-
     // Sort
-    switch (filters.sortBy) {
-      case 'priceAsc':
-        result.sort((a, b) => getLowestPrice(a.destinations) - getLowestPrice(b.destinations));
-        break;
-      case 'priceDesc':
-        result.sort((a, b) => getLowestPrice(b.destinations) - getLowestPrice(a.destinations));
-        break;
-      case 'dateAsc':
-        result.sort((a, b) => {
-          const aDate = Math.min(...a.destinations.map(d => new Date(d.startDate).getTime()));
-          const bDate = Math.min(...b.destinations.map(d => new Date(d.startDate).getTime()));
-          return aDate - bDate;
-        });
-        break;
-      case 'dateDesc':
-        result.sort((a, b) => {
-          const aDate = Math.min(...a.destinations.map(d => new Date(d.startDate).getTime()));
-          const bDate = Math.min(...b.destinations.map(d => new Date(d.startDate).getTime()));
-          return bDate - aDate;
-        });
-        break;
-    }
-
     setFilteredPackages(result);
-  }, [packages, filters]);
-
-  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFilters(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+  }, [packages]);
 
   const handlePackageClick = (pkg: Package) => {
     // implement handlePackageClick functionality here
@@ -171,66 +114,7 @@ const Umrah: React.FC = () => {
             Beschikbare Umrah Pakketten
           </h1>
 
-          {/* Filter Section */}
-          <div className="bg-white rounded-lg p-4 mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Min. Prijs (€)
-                </label>
-                <input
-                  type="number"
-                  name="minPrice"
-                  value={filters.minPrice}
-                  onChange={handleFilterChange}
-                  className="w-full p-2 border rounded-md"
-                  placeholder="Min prijs"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Max. Prijs (€)
-                </label>
-                <input
-                  type="number"
-                  name="maxPrice"
-                  value={filters.maxPrice}
-                  onChange={handleFilterChange}
-                  className="w-full p-2 border rounded-md"
-                  placeholder="Max prijs"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Vanaf Datum
-                </label>
-                <input
-                  type="date"
-                  name="date"
-                  value={filters.date}
-                  onChange={handleFilterChange}
-                  className="w-full p-2 border rounded-md"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Sorteer op
-                </label>
-                <select
-                  name="sortBy"
-                  value={filters.sortBy}
-                  onChange={handleFilterChange}
-                  className="w-full p-2 border rounded-md"
-                >
-                  <option value="none">Geen sortering</option>
-                  <option value="priceAsc">Prijs (laag naar hoog)</option>
-                  <option value="priceDesc">Prijs (hoog naar laag)</option>
-                  <option value="dateAsc">Datum (vroeg naar laat)</option>
-                  <option value="dateDesc">Datum (laat naar vroeg)</option>
-                </select>
-              </div>
-            </div>
-          </div>
+          
 
           {loading ? (
             <p className="text-white">Laden...</p>
