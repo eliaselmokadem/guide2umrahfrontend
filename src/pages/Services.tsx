@@ -27,13 +27,6 @@ interface Service {
 const Services: React.FC = () => {
   const [services, setServices] = useState<Service[]>([]);
   const [filteredServices, setFilteredServices] = useState<Service[]>([]);
-  const [filters, setFilters] = useState({
-    location: '',
-    minPrice: '',
-    maxPrice: '',
-    startDate: '',
-    sortBy: 'none' // 'none', 'priceAsc', 'priceDesc', 'dateAsc', 'dateDesc'
-  });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,55 +46,6 @@ const Services: React.FC = () => {
 
     fetchServices();
   }, []);
-
-  useEffect(() => {
-    let result = [...services];
-
-    // Filter by location
-    if (filters.location) {
-      result = result.filter(service => 
-        service.location.toLowerCase().includes(filters.location.toLowerCase())
-      );
-    }
-
-    // Filter by price range
-    if (filters.minPrice) {
-      result = result.filter(service => 
-        !service.isFree && service.price && service.price >= Number(filters.minPrice)
-      );
-    }
-    if (filters.maxPrice) {
-      result = result.filter(service => 
-        !service.isFree && service.price && service.price <= Number(filters.maxPrice)
-      );
-    }
-
-    // Filter by start date
-    if (filters.startDate) {
-      const filterDate = new Date(filters.startDate);
-      result = result.filter(service => 
-        service.startDate && new Date(service.startDate) >= filterDate
-      );
-    }
-
-    // Sort
-    switch (filters.sortBy) {
-      case 'priceAsc':
-        result.sort((a, b) => (a.price || 0) - (b.price || 0));
-        break;
-      case 'priceDesc':
-        result.sort((a, b) => (b.price || 0) - (a.price || 0));
-        break;
-      case 'dateAsc':
-        result.sort((a, b) => new Date(a.startDate || '9999-12-31').getTime() - new Date(b.startDate || '9999-12-31').getTime());
-        break;
-      case 'dateDesc':
-        result.sort((a, b) => new Date(b.startDate || '9999-12-31').getTime() - new Date(a.startDate || '9999-12-31').getTime());
-        break;
-    }
-
-    setFilteredServices(result);
-  }, [services, filters]);
 
   const handleServiceClick = (service: Service) => {
     navigate(`/services/${service._id}`);
