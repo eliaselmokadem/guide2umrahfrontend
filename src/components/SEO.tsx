@@ -8,6 +8,7 @@ interface SEOProps {
   type?: string;
   image?: string;
   url?: string;
+  keywords?: string;
 }
 
 const SEO = ({ 
@@ -16,13 +17,15 @@ const SEO = ({
   name = 'Guide2Umrah',
   type = 'website',
   image = logo,
-  url = 'https://www.guide2umrah.com'
+  url = 'https://www.guide2umrah.com',
+  keywords
 }: SEOProps) => {
   return (
     <Helmet>
       {/* Standard metadata tags */}
       <title>{title}</title>
       <meta name='description' content={description} />
+      {keywords && <meta name='keywords' content={keywords} />}
 
       {/* OpenGraph tags */}
       <meta property='og:url' content={url} />

@@ -25,7 +25,6 @@ interface Service {
 }
 
 const Services: React.FC = () => {
-  const [services, setServices] = useState<Service[]>([]);
   const [filteredServices, setFilteredServices] = useState<Service[]>([]);
   const navigate = useNavigate();
 
@@ -37,7 +36,6 @@ const Services: React.FC = () => {
           throw new Error("Failed to fetch services");
         }
         const data = await response.json();
-        setServices(data);
         setFilteredServices(data);
       } catch (err) {
         console.error(err);
